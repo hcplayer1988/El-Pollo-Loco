@@ -10,4 +10,7 @@ function init() {
 
     console.log('My Character is', character);
     
+    
 };
+
+console.log(character);
