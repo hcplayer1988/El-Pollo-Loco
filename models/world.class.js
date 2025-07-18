@@ -1,5 +1,3 @@
-
-
 class World {
     character = new Character();
     enemies = [
@@ -17,12 +15,15 @@ class World {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.heigt);
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.heigt);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+        this.enemies.forEach(enemy => {
+            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+        });
 
-        //draw wird immer wieder aufgerufen.
+        //draw() wird immer wieder aufgerufen
         let self = this;
-        requestAnimationFrame(function() {      // genaaue erklärung in Video 10 Sektion 2 MModul 12!
+        requestAnimationFrame(function() {      // genaue erklärung in Video 10 Sektion 2 MModul 12!
             self.draw();
         });
     }
