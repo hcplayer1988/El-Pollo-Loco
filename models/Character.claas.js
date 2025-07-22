@@ -20,7 +20,6 @@ class Character extends MovableObject {
 
         ];
         currentImage = 0;
-        currentJumpImage = 0;
         world;
         speed = 8;
 
@@ -49,25 +48,13 @@ class Character extends MovableObject {
 
             if (this.world.keyboard.d_right || this.world.keyboard.a_left) {
                 // walk animation
-                let i = this.currentImage % this.images_walking.length; // let i = 7 % 6; => 1, rest 1 ==> i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
-                let path = this.images_walking[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                this.playAnimation(this.images_walking);
             }
         }, 1000 / 25);
     }
 
-    // jump animation doesn't work already
+    
     jump() {
-        setInterval( () => {
-            this.y += this.speed;
-            if (this.world.keyboard.w_jump) {
-                // jump animation
-                let j = this.currentJumpImage % this.images_jump.length; // let i = 7 % 6; => 1, rest 1 ==> i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
-                let path = this.images_jump[j];
-                this.img = this.imageCache[path];
-                this.currentJumpImage++;
-            }
-        }, 1000 / 25);
+
     }
 }
