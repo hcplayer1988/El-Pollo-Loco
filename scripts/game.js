@@ -5,18 +5,9 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-    console.log('My Character is', world.character);
-    
+      
 };
 
-/* Das funktioniert mit allen Tasten außer den Pfeiltasten!!
-window.addEventListener("keypress", (e) => {
-    console.log(e);
-    
-});
-*/
-
-// Tastentrigger
 // der trigger für die Pfeiltasten funktionierrt nur mit "keydown"!!! Das funktioniert aber auch mit allen anderen Tasten!!
 // Tastentrigger auf true
 window.addEventListener("keydown", (e) => {

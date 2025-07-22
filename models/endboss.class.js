@@ -20,12 +20,11 @@ class Endboss extends MovableObject {
     constructor() {
         super().loadImage('assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png')
         this.loadImages(this.images_walking);
-        this.x = 2650;
+        this.x = 2550;
         this.animate();
     }
 
-    animate() {
-        this.moveLeft();
+    animate() {     
         setInterval( () =>{
             this.playAnimation(this.images_walking);
         }, 1000 / 10);

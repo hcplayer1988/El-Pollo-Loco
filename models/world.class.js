@@ -33,7 +33,7 @@ class World {
 
         //draw() wird immer wieder aufgerufen
         let self = this;
-        requestAnimationFrame(function() {      // genaue erklärung in Video 10 Sektion 2 MModul 12!
+        requestAnimationFrame(function() {      // genaue erklärung in Video 10 Sektion 2 Modul 12!
             self.draw();
         });
     }
