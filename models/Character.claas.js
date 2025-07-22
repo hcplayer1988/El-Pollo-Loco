@@ -8,6 +8,7 @@ class Character extends MovableObject {
             'assets/img/ingame_imgs/2.character.pepe/2.walk/W-26.png'
         ];
         currentImage = 0;
+        world;
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png')
@@ -18,15 +19,18 @@ class Character extends MovableObject {
 
     animate() {
         setInterval( () =>{
-            let i = this.currentImage % this.images_walking.length; // let i = 7 % 6; => 1, rest 1
-            // i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
-            let path = this.images_walking[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-            }, 1000 / 10);
+
+            if (this.world.keyboard.d_right) {
+                
+                // walk animation
+                let i = this.currentImage % this.images_walking.length; // let i = 7 % 6; => 1, rest 1 ==> i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
+                let path = this.images_walking[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            }
+        }, 1000 / 15);
     }
 
     jump() {
-
     }
-};
+}
