@@ -7,8 +7,22 @@ class Character extends MovableObject {
             'assets/img/ingame_imgs/2.character.pepe/2.walk/W-25.png',
             'assets/img/ingame_imgs/2.character.pepe/2.walk/W-26.png'
         ];
+        images_jump = [
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-31.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-32.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-33.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-34.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-35.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-36.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-37.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-38.png',
+            'assets/img/ingame_imgs/2.character.pepe/3.jump/J-39.png'
+
+        ];
         currentImage = 0;
+        currentJumpImage = 0;
         world;
+        speed = 8;
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png')
@@ -18,19 +32,42 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval( () =>{
+        setInterval( () => {
+            if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
+                this.x += this.speed;
 
-            if (this.world.keyboard.d_right) {
-                
+                this.otherDirection = false;
+            }
+            if (this.world.keyboard.a_left && this.x > -200) {
+                this.x -= this.speed;
+                this.otherDirection = true;
+            }
+            this.world.camera_x = -this.x +100;
+        }, 1000 / 60);
+
+        setInterval( () => {
+
+            if (this.world.keyboard.d_right || this.world.keyboard.a_left) {
                 // walk animation
                 let i = this.currentImage % this.images_walking.length; // let i = 7 % 6; => 1, rest 1 ==> i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
                 let path = this.images_walking[i];
                 this.img = this.imageCache[path];
                 this.currentImage++;
             }
-        }, 1000 / 15);
+        }, 1000 / 25);
     }
 
+    // jump animation doesn't work already
     jump() {
+        setInterval( () => {
+            this.y += this.speed;
+            if (this.world.keyboard.w_jump) {
+                // jump animation
+                let j = this.currentJumpImage % this.images_jump.length; // let i = 7 % 6; => 1, rest 1 ==> i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
+                let path = this.images_jump[j];
+                this.img = this.imageCache[path];
+                this.currentJumpImage++;
+            }
+        }, 1000 / 25);
     }
 }
