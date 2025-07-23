@@ -19,11 +19,10 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/3.jump/J-39.png'
 
     ];
-    walking_sound = new Audio('audio/walk.mp3');
+    walking_sound = new Audio('audio/fast_walk_sand.mp3');
     currentImage = 0;
     world;
-    speed = 8;
-    //y = 80;
+    speed = 4;
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png')
@@ -36,38 +35,29 @@ class Character extends MovableObject {
     animate() {
         setInterval( () => {
             this.walking_sound.pause();
+            // walking right
             if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
+                this.moveRight();
                 this.otherDirection = false;
                 this.walking_sound.play();
             }
 
-            if (this.world.keyboard.a_left && this.x > 0) {
-                this.x -= this.speed;
+            // walking left
+            if (this.world.keyboard.a_left && this.x > -600) {
+                this.moveLeft();
                 this.otherDirection = true;
                 this.walking_sound.play();
             }
-
-            if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
-
-                this.otherDirection = false;
-            }
-            if (this.world.keyboard.a_left && this.x > -200) {
-                this.x -= this.speed;
-                this.otherDirection = true;
-            }
-            //console.log('this.speedY', this.speedY);
             
+            // jumping
             if(this.world.keyboard.w_jump && !this.isAboveGround()) {
-                this.speedY = 30;
+                this.jump();
             }
 
-            this.world.camera_x = -this.x +100;
+            this.world.camera_x = -this.x +80;
         }, 1000 / 60);
 
         setInterval( () => {
-
             if (this.isAboveGround()) {
                 this.playAnimation(this.images_jumping);
             } else {
@@ -75,10 +65,6 @@ class Character extends MovableObject {
                     this.playAnimation(this.images_walking);
                 }
             }   
-        }, 1000 / 25);
-    }
-    
-    jump() {
-
+        }, 1000 / 9);
     }
 }
