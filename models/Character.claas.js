@@ -22,11 +22,12 @@ class Character extends MovableObject {
         currentImage = 0;
         world;
         speed = 8;
+        y = 80;
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png')
         this.loadImages(this.images_walking);
-
+        this.applyGravity();
         this.animate();
     }
 
