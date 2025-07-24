@@ -22,12 +22,14 @@ class World {
     checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)) {
-                    console.log('collision with Character', enemy); 
+                if (this.character.isColliding(enemy)) {
+                    this.character.hit();
+                    console.log(`Character loses energy. Remaining energie: ${this.character.energy}`);
                 }
             });
         }, 2000);
     }
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

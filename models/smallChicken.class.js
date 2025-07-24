@@ -9,6 +9,8 @@ class SmallChicken extends MovableObject {
         right: 0,
         bottom: 0
     };
+
+    damage = 5;
     
 
     images_walking = [

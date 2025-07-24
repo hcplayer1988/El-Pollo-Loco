@@ -9,6 +9,8 @@ class Chicken extends MovableObject {
         right: 0,
         bottom: 0
     };
+
+    damage = 10;
     
 
     images_walking = [

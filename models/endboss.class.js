@@ -10,6 +10,8 @@ class Endboss extends MovableObject {
         right: 0,
         bottom: 0
     };
+
+    damage = 20;
     
 
     images_walking = [
