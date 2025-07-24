@@ -24,6 +24,13 @@ class Character extends MovableObject {
     world;
     speed = 4;
 
+    offset = {
+        top: 50,
+        left: 10,
+        right: 10,
+        bottom: 5
+    };
+
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png')
         this.loadImages(this.images_walking);
