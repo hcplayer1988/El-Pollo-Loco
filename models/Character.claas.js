@@ -40,10 +40,10 @@ class Character extends MovableObject {
     speed = 4;
 
     offset = {
-        top: 10,
-        left: 10,
-        right: 10,
-        bottom: 10
+        top: 65,
+        left: -10,
+        right: 20,
+        bottom: 60
     };
 
     constructor() {

@@ -6,12 +6,12 @@ class MovableObject extends DrawableObject {
     acceleration = 3;
     energy = 100;
     lastHit = 0;
-    offset = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
-    };
+    // offset = {
+    //     top: 0,
+    //     left: 0,
+    //     right: 0,
+    //     bottom: 0
+    // };
 
     applyGravity() { 
         setInterval( () => {
@@ -22,10 +22,14 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        return this.y < 270
+        if (this instanceof ThrowableObject) {  // Throwable object should always fall
+            return true;
+        } else {
+            return this.y < 270
+        }
     }
 
-    // character is ccolliding(chicken)
+    // character is colliding(chicken)
     isColliding(mo) {
         return this.x + this.width > mo.x &&    // rechte kante pepe zu linke kante enemy
             this.y + this.height > mo.y &&      // unterkante pepe ztu oberkante enemy
