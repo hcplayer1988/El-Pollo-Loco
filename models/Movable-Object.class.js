@@ -25,17 +25,6 @@ class MovableObject extends DrawableObject {
         return this.y < 270
     }
 
-    drawFrame(ctx) {
-
-        if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss){
-            ctx.beginPath();
-            ctx.lineWidth = '4';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
-
     // character is ccolliding(chicken)
     isColliding(mo) {
         return this.x + this.width > mo.x &&    // rechte kante pepe zu linke kante enemy
