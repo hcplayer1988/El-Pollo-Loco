@@ -2,11 +2,16 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-      
+    canvas.addEventListener('click', () => {
+    world.gameStarted = true;
+});
 };
+
+
 
 // der trigger für die Pfeiltasten funktionierrt nur mit "keydown"!!! Das funktioniert aber auch mit allen anderen Tasten!!
 // Tastentrigger auf true

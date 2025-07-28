@@ -7,14 +7,20 @@ class World {
     camera_x = 0;
     statusBar = new Statusbar();
     throwableObjects = [];
+    startImage = new Image();
     
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
+        this.startImage.src = './assets/img/ingame_imgs/9.intro_outro_screens/start.screen/startscreen.1.png'
+        
         this.setWorld();
         this.run();
+
+        this.startImage.onload = () => {
+            this.draw();
+        }
     }
 
     setWorld() {
@@ -45,24 +51,32 @@ class World {
         });
     }
 
+    drawStartScreen() {
+        this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillText('Klicke zum Starten', this.canvas.width / 2, this.canvas.height - 50);
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
+        if (!this.gameStarted) {
+            this.drawStartScreen();
+        } else {
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToMap(this.level.backgroundObjects);
 
-        this.ctx.translate(-this.camera_x, 0);
-        // ------- Space for fixed objects -------
-        this.addToMap(this.statusBar);
-        this.ctx.translate(this.camera_x, 0);
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.statusBar);
+            this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectsToMap(this.level.clouds);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.throwableObjects);
-        
-        this.ctx.translate(-this.camera_x, 0);
-
+            this.addObjectsToMap(this.level.clouds);
+            this.addToMap(this.character);
+            this.addObjectsToMap(this.level.enemies);
+            this.addObjectsToMap(this.throwableObjects);
+            
+            this.ctx.translate(-this.camera_x, 0);
+        }
         //draw() wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame(function() {      // genaue erklärung in Video 10 Sektion 2 Modul 12!
@@ -102,6 +116,8 @@ class World {
         this.ctx.restore();
     }
 }
+
+
 
 /* Diese forEach sschleifen werden durch die Funktion addObjectsToMap() ersetzt!!
         this.enemies.forEach(enemy => {
