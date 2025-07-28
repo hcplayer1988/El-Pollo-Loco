@@ -1,3 +1,4 @@
+
 let canvas;
 let world;
 let keyboard = new Keyboard();
@@ -7,7 +8,12 @@ function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     canvas.addEventListener('click', () => {
-    world.gameStarted = true;
+        if (!world.gameStarted) {
+            world.gameStarted = true;
+            initLevel();
+            world.level = level1;
+        }
+    
 });
 };
 
