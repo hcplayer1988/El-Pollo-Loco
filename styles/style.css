@@ -2,6 +2,11 @@
 body {
     margin: 0;
     padding: 0;
+    color: #ff6600;
+}
+
+body a {
+    text-decoration: none;
 }
 
 .background {
@@ -18,4 +23,49 @@ body {
 
 canvas {
     background-color: rgb(0, 0, 0);
+}
+
+.controls {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    width: 720px;
+    padding-top: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ff9500;
+}
+
+.soundbar {
+    display: flex;
+    align-items: center;
+}
+
+.soundbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.soundbar img{
+    height: 28px;
+    width: 28px;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+}
+
+.soundbar input {
+    width: 80px;
+    cursor: pointer;
+}
+
+.keys {
+    border: none;
+    border-radius: 5px;
+    background-color: #754d24;
+    padding: 4px;
+    gap: 12px;
 }

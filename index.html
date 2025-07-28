@@ -32,14 +32,23 @@
 
         <canvas id="canvas" width="720px" height="480px"></canvas>
         
-        <!-- <div class="soundbar">
-            <button onclick="mute()" id="soundOff" class="active">
-                <img src="./assets/icons/sound_on.png" alt="">
-            </button>
-            <div class="sound_slider">
-                <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
-            </div>
-        </div> -->
+        <section class="controls">
+
+                <div class="soundbar">
+                        <img onclick="mute()" src="./assets/icons/sound_on.png" alt="">
+                    <div class="sound_slider">
+                        <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
+                    </div>
+                </div>
+
+                <div class="keys">
+                    <span>left / right = a/d,</span>
+                    <span>jump = w,</span>
+                    <span>throw bottle = space</span>
+                </div>
+            
+        </section>
+
     </div>
 </body>
 </html>
