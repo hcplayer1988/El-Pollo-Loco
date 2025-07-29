@@ -12,6 +12,7 @@ class Endbossbar extends Statusbar {
         ];
         super(endbossImages, 100);
         this.x = 490;
+        
     }
     
 }
