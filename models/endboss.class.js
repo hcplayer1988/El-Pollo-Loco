@@ -14,7 +14,6 @@ class Endboss extends MovableObject {
 
     damage = 20;
     
-
     images_alert = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G6.png',
@@ -46,7 +45,7 @@ class Endboss extends MovableObject {
     ];
     attackMode = false;
     currentImages = this.images_alert;
-        
+    world;  
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png')
@@ -56,10 +55,9 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
-
     animate() {
         setInterval(() => {
-            if ( this.world.camera_x > 3500) {
+            if ( this.world.camera_x < 3700) {
                 this.playAnimation(images_attack);
             } else {
                 this.playAnimation(this.currentImages);
