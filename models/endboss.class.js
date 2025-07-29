@@ -56,12 +56,9 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
-            if ( this.world.camera_x < 3700) {
-                this.playAnimation(images_attack);
-            } else {
-                this.playAnimation(this.currentImages);
-            }
+        setInterval( () =>{
+            this.playAnimation(this.images_alert);
         }, 1000 / 10);
+
     }
 }

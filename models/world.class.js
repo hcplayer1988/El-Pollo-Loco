@@ -78,25 +78,19 @@ class World {
             this.ctx.translate(-this.camera_x, 0);
             this.addToMap(this.healthBar);
             this.ctx.translate(this.camera_x, 0);
-
             this.ctx.translate(-this.camera_x, 0);
             this.addToMap(this.coinBar);
             this.ctx.translate(this.camera_x, 0);
-
             this.ctx.translate(-this.camera_x, 0);
             this.addToMap(this.bottleBar);
             this.ctx.translate(this.camera_x, 0);
-
             this.ctx.translate(-this.camera_x, 0);
             this.addToMap(this.endbossBar);
             this.ctx.translate(this.camera_x, 0);
 
-            
             this.addObjectsToMap(this.level.coins);
             this.addObjectsToMap(this.level.bottles);
             
-
-
             this.addToMap(this.character);
             this.addObjectsToMap(this.level.enemies);
             this.addObjectsToMap(this.throwableObjects);

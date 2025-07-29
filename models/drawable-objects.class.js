@@ -39,12 +39,18 @@ class DrawableObject {
     drawHitFrame(ctx) {
 
         if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss){
+            let x = this.x + this.offset.left;
+            let y = this.y + this.offset.top;
+            let width = this.width - this.offset.left - this.offset.right;
+            let height = this.height - this.offset.top - this.offset.bottom;
+
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'green';
-            ctx.rect(this.x - this.offset.left, this.y + this.offset.bottom, this.width - this.offset.right, this.height - this.offset.top);
+            ctx.rect(x, y, width, height);
             ctx.stroke();
         }
+
     }
 
     loadImages(arr) {

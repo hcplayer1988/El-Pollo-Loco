@@ -24,12 +24,11 @@ class MovableObject extends DrawableObject {
         }
     }
 
-    // character is colliding(chicken)
     isColliding(mo) {
-        return this.x + this.width > mo.x &&    // rechte kante pepe zu linke kante enemy
-            this.y + this.height > mo.y &&      // unterkante pepe ztu oberkante enemy
-            this.x < mo.x + mo.width &&         // linke kante pepe zu rechter kante enemy
-            this.y < mo.y + mo.height           // oberkante pepe zu untere kante enemy (wird hier nicht benötigt)
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&    // rechte kante pepe zu linke kante enemy
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&      // unterkante pepe ztu oberkante enemy
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&         // linke kante pepe zu rechter kante enemy
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;           // oberkante pepe zu untere kante enemy (wird hier nicht benötigt)
     }
 
     hit() {

@@ -1,3 +1,4 @@
+
 class Character extends MovableObject {
     images_walking = [
         'assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png',
@@ -40,10 +41,10 @@ class Character extends MovableObject {
     speed = 4;
 
     offset = {
-        top: 65,
-        left: -10,
-        right: 20,
-        bottom: 60
+        top: 50,
+        left: 10,
+        right: 10,
+        bottom: 5
     };
 
     constructor() {
