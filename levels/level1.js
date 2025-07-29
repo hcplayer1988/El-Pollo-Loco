@@ -28,12 +28,6 @@ function initLevel() {
         new Cloud(),
     ],
 
-    // [
-    //     new ThrowableObject(),
-    //     new ThrowableObject(),
-    //     new ThrowableObject(),
-    // ],
-
     [
         new  BackgroundObject('assets/img/ingame_imgs/5.background/layers/air.png', -719),
         new  BackgroundObject('assets/img/ingame_imgs/5.background/layers/3_third_layer/2.png', -719),

@@ -6,7 +6,10 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar = new Statusbar();
+    healthBar = new Healthbar();
+    coinBar = new Coinbar();
+    bottleBar = new Bottlebar();
+    endbossBar = new Endbossbar();    
     throwableObjects = [];
     startImage = new Image();
     
@@ -50,7 +53,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.healthBar.setPercentage(this.character.energy);
                 //console.log(`Character loses energy. Remaining energie: ${this.character.energy}`);
             }
         });
@@ -72,7 +75,19 @@ class World {
             this.addObjectsToMap(this.level.backgroundObjects);
 
             this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.statusBar);
+            this.addToMap(this.healthBar);
+            this.ctx.translate(this.camera_x, 0);
+
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.coinBar);
+            this.ctx.translate(this.camera_x, 0);
+
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.bottleBar);
+            this.ctx.translate(this.camera_x, 0);
+
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToMap(this.endbossBar);
             this.ctx.translate(this.camera_x, 0);
 
             this.addObjectsToMap(this.level.clouds);
