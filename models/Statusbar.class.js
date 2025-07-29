@@ -9,11 +9,31 @@ class Statusbar extends DrawableObject {
         'assets/img/ingame_imgs/7.statusbars/1_statusbar/2_statusbar_health/green/100.png',
     ];
 
+    coinImages = [
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/blue/40.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/blue/60.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/green/80.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/green/100.png',
+    ];
+
+    bottleImages = [
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/3_statusbar_bottle/orange/0.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/3_statusbar_bottle/orange/20.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/3_statusbar_bottle/blue/60.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/3_statusbar_bottle/green/80.png',
+        'assets/img/ingame_imgs/7.statusbars/1_statusbar/3_statusbar_bottle/green/100.png',
+    ];
+
     percentage = 100;
 
     constructor() {
         super();
         this.loadImages(this.healthImages);
+        this.loadImages(this.coinImages);
+        this.loadImages(this.bottleImages);
         this.x = 20;
         this.y = 0;
         this.height = 50;
