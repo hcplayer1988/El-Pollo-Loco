@@ -6,10 +6,10 @@ class Endboss extends MovableObject {
     height = 290;
 
     offset = {
-        top: 50,
-        left: -10,
-        right: 10,
-        bottom: 40
+        top: 40,
+        left: 10,
+        right: 0,
+        bottom: 5
     };
 
     damage = 20;

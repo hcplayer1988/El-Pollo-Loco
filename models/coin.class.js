@@ -4,6 +4,13 @@ class Coin extends MovableObject {
     width = 150;
     height = 150;
 
+    offset = {
+        top: 50,
+        left: 50,
+        right: 50,
+        bottom: 50
+    };
+
     constructor() {
         super();
         this.loadImage('assets/img/ingame_imgs/8.coin/coin_1.png');

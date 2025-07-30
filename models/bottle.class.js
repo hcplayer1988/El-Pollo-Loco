@@ -4,6 +4,13 @@ class Bottle extends MovableObject {
     width = 70;
     height = 70;
 
+    offset = {
+        top: 10,
+        left: 20,
+        right: 20,
+        bottom: 6,
+    };
+
     constructor() {
         super();
         this.loadImage('assets/img/ingame_imgs/6.salsa.bottle/2_salsa_bottle_on_ground.png');

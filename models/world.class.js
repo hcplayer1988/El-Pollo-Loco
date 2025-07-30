@@ -42,7 +42,7 @@ class World {
         if (!this.level || !this.gameStarted) return; // check the beginn of the game
         
         if (this.keyboard.space_shoot) {
-            let bottle = new  ThrowableObject(this.character.x +40, this.character.y + 50 );
+            let bottle = new  ThrowableObject(this.character.x + 40, this.character.y + 50 );
             this.throwableObjects.push(bottle);
         }
     }

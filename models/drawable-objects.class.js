@@ -27,7 +27,7 @@ class DrawableObject {
 
     drawFrame(ctx) {
 
-        if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss){
+        if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle){
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';
@@ -38,7 +38,7 @@ class DrawableObject {
 
     drawHitFrame(ctx) {
 
-        if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss){
+        if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss|| this instanceof Coin || this instanceof Bottle){
             let x = this.x + this.offset.left;
             let y = this.y + this.offset.top;
             let width = this.width - this.offset.left - this.offset.right;
