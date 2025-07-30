@@ -14,10 +14,14 @@ class SmallChicken extends MovableObject {
     
 
     images_walking = [
-            'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/1_w.png',
-            'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/2_w.png',
-            'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/3_w.png',
-        ];
+        'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/1_w.png',
+        'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/2_w.png',
+        'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/3_w.png',
+    ];
+    
+    images_dead = [
+        'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/2_dead/dead.png'
+    ];
         
 
     constructor() {
@@ -29,13 +33,18 @@ class SmallChicken extends MovableObject {
     }
 
     animate() {
-        setInterval( () => {
-            this.moveLeft();
-        }, 1000 / 90);
-        
-        setInterval( () =>{
-            this.playAnimation(this.images_walking);
-        }, 1000 / 10);
+        setInterval(() => {
+            if (!this.isDead()) {
+                this.moveLeft();
+            }
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (this.isDead()) {
+                this.playDeadAnimation(this.images_dead);
+            } else
+                this.playAnimation(this.images_walking);
+        }, 400);
     }
     
 }

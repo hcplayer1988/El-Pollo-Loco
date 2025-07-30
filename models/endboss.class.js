@@ -43,6 +43,19 @@ class Endboss extends MovableObject {
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G19.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G20.png'
     ];
+
+    images_hurt = [
+        'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G21.png',
+        'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G22.png',
+        'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G23.png'
+    ];
+
+    images_dead = [
+        'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G24.png',
+        'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G25.png',
+        'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G26.png'
+    ];
+
     attackMode = false;
     currentImages = this.images_alert;
     world;  
@@ -50,15 +63,27 @@ class Endboss extends MovableObject {
     constructor() {
         super().loadImage('assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png')
         this.loadImages(this.images_alert);
+        this.loadImages(this.images_walking);
         this.loadImages(this.images_attack);
+        this.loadImages(this.images_hurt);
+        this.loadImages(this.images_dead);
         this.x = 3900;
         this.animate();
     }
 
     animate() {
-        setInterval( () =>{
-            this.playAnimation(this.images_alert);
-        }, 1000 / 10);
+        setInterval(() => {
+            if (!this.isDead()) {
+                this.moveLeft();
+            }
+        }, 1000 / 60);
 
+        setInterval(() => {
+            if (this.isDead()) {
+                this.playDeadAnimation(this.images_dead);
+            } else
+                this.playAnimation(this.images_alert);
+        }, 400);
     }
 }
+
