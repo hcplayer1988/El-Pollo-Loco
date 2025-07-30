@@ -57,8 +57,11 @@ class Endboss extends MovableObject {
     ];
 
     attackMode = false;
+    alertPhaseActive = true;
     currentImages = this.images_alert;
-    world;  
+    world;
+   
+
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png')
@@ -67,23 +70,53 @@ class Endboss extends MovableObject {
         this.loadImages(this.images_attack);
         this.loadImages(this.images_hurt);
         this.loadImages(this.images_dead);
-        this.x = 3900;
+        this.x = 3980;
+        this.speed = 0.4;
+        this.world = world;
+        this.character = world.character;
         this.animate();
     }
 
     animate() {
         setInterval(() => {
-            if (!this.isDead()) {
+            if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
+                this.alertTriggered = true;
+                this.alertPhaseActive = true;
+
+                setTimeout(() => {
+                    this.alertPhaseActive = false;
+                }, 2000); // Alertphase is 21 seconds
+            }
+
+            if (!this.isDead() && !this.alertPhaseActive) {
                 this.moveLeft();
             }
-        }, 1000 / 60);
+        }, 1000 / 100);
 
         setInterval(() => {
-            if (this.isDead()) {
-                this.playDeadAnimation(this.images_dead);
-            } else
-                this.playAnimation(this.images_alert);
-        }, 400);
+            this.updateState();
+            this.playAnimation(this.currentImages);
+        }, 200);
     }
+
+    getDistanceToCharacter() {
+        return Math.abs(this.x - this.world.character.x);
+    }
+
+    updateState() {
+        if (this.isDead()) {
+            this.currentImages = this.images_dead;
+        } else if (this.alertPhaseActive) {
+            this.attackMode = false;
+            this.currentImages = this.images_alert;
+        } else if (this.energy <= 50 || this.getDistanceToCharacter() < 150) {
+            this.attackMode = true;
+            this.currentImages = this.images_attack;
+        } else {
+            this.attackMode = false;
+            this.currentImages = this.images_alert;
+        }
+    }
+
 }
 
