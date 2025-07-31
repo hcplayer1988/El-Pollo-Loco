@@ -48,16 +48,32 @@ class World {
     }
 
     checkCollisions() {
-        if (!this.level || !this.gameStarted) return; // check the beginn of the game
+        if (!this.level || !this.gameStarted) return;
 
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
+            // Chicken-Kollision speziell behandeln
+            if (enemy instanceof Chicken || SmallChicken && !enemy.isDead()) {  
+                if (enemy.isHitFromAbove(this.character)) {
+                    enemy.die();
+                } else {
+                    this.character.hit();
+                    this.healthBar.setPercentage(this.character.energy);
+                }
+            }
+            // Andere Gegner (nicht Chicken)
+            else if (!enemy.isDead()) {
                 this.character.hit();
                 this.healthBar.setPercentage(this.character.energy);
-                //console.log(`Character loses energy. Remaining energie: ${this.character.energy}`);
             }
-        });
-    }
+        }
+    });
+
+    this.level.enemies = this.level.enemies.filter(enemy => !enemy.markedForDeletion);
+}
+
+
+
 
     drawStartScreen() {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);

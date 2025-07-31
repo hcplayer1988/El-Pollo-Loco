@@ -11,6 +11,8 @@ class SmallChicken extends MovableObject {
     };
 
     damage = 5;
+    dead = false;
+    markedForDeletion = false;
     
 
     images_walking = [
@@ -36,15 +38,32 @@ class SmallChicken extends MovableObject {
         setInterval(() => {
             if (!this.isDead()) {
                 this.moveLeft();
-            }
-        }, 1000 / 60);
-
-        setInterval(() => {
-            if (this.isDead()) {
-                this.playDeadAnimation(this.images_dead);
-            } else
                 this.playAnimation(this.images_walking);
-        }, 400);
+            } else {
+                this.img = this.imageCache[this.images_dead[0]]; // oder playDeadAnimation()
+            }
+        }, 1000 / 20); // läuft konstant & reagiert schnell
+    }
+
+
+    isDead() {
+        return this.dead;
+    }
+
+    isHitFromAbove(character) {
+        return character.y + character.height < this.y + 50 &&
+            character.x + character.width > this.x &&
+            character.x < this.x + this.width;
+    }
+
+    die() {
+        this.dead = true;
+        this.speed = 0;
+        this.loadImages(this.images_dead);
+        this.img = this.imageCache[this.images_dead[0]];
+        setTimeout(() => {
+            this.markedForDeletion = true;
+        }, 1000);
     }
     
 }

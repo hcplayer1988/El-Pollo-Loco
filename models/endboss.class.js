@@ -71,7 +71,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.images_hurt);
         this.loadImages(this.images_dead);
         this.x = 3980;
-        this.speed = 0.4;
+        this.speed = 0.3;
         this.world = world;
         this.character = world.character;
         this.animate();
@@ -85,7 +85,7 @@ class Endboss extends MovableObject {
 
                 setTimeout(() => {
                     this.alertPhaseActive = false;
-                }, 2000); // Alertphase is 21 seconds
+                }, 2000); // Alertphase is 2 seconds
             }
 
             if (!this.isDead() && !this.alertPhaseActive) {
@@ -111,9 +111,11 @@ class Endboss extends MovableObject {
             this.currentImages = this.images_alert;
         } else if (this.energy <= 50 || this.getDistanceToCharacter() < 150) {
             this.attackMode = true;
+            this.speed = 0.8;
             this.currentImages = this.images_attack;
         } else {
             this.attackMode = false;
+            this.speed = 0.3;
             this.currentImages = this.images_alert;
         }
     }
