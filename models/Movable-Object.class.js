@@ -77,5 +77,3 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 }
-
-
