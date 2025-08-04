@@ -41,66 +41,84 @@ class World {
 
     checkThrowObjects() {
         if (!this.level || !this.gameStarted) return; // check the beginn of the game
-        
         if (this.keyboard.space_shoot && !this.throwCooldown && this.bottlesCollected > 0) {
             let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 50);
             this.throwableObjects.push(bottle);
             this.bottlesCollected--;
             this.bottleBar.setPercentage(this.bottlesCollected * 20);
-
             this.throwCooldown = true; // Sperre aktivieren
-
             setTimeout(() => {
                 this.throwCooldown = false; // Sperre nach 300ms wieder freigeben
             }, 300);
         }
-
     }
 
     checkCollisions() {
         if (!this.level || !this.gameStarted) return;
+            this.checkCoinCollisions();
+            this.checkBottleCollisions();
+            this.checkEnemyCollisions();
+            this.cleanupEnemies();
+    }
 
+    checkCoinCollisions() {
         this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
                 this.level.coins.splice(index, 1);
                 this.coinBar.setPercentage(this.coinBar.percentage + 20);
             }
         });
+    }
 
+    checkBottleCollisions() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
                 console.log('Bottle eingesammelt!');
-                this.level.bottles.splice(index, 1); // Bottle entfernen
+                this.level.bottles.splice(index, 1);
                 this.bottlesCollected++;
-                this.bottleBar.setPercentage(this.bottleBar.percentage + 20); // Bottlebar erhöhen
+                this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
             }
         });
+    }
 
+    checkEnemyCollisions() {
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy)) {
-                console.log('Kollision erkannt mit:', enemy.constructor.name);
+            if (!this.character.isColliding(enemy)) return;
 
-                if (!enemy.isDead()) {
-                    if (enemy instanceof SmallChicken || enemy instanceof Chicken) {
-                        if (enemy.isHitFromAbove(this.character)) {
-                            // Charakter springt von oben auf das Huhn
-                            enemy.die();
-                        } else {
-                            // Charakter trifft das Huhn seitlich
-                            this.character.hit();
-                            this.healthBar.setPercentage(this.character.energy);
-                        }
-                    } else {
-                        console.log('Kollision mit anderem Gegner → Character nimmt Schaden');
-                        this.character.hit();
-                        this.healthBar.setPercentage(this.character.energy);
-                    }
-                } else {
-                    console.log('☠️ Gegner ist bereits tot → keine Aktion');
-                }
+            console.log('Kollision erkannt mit:', enemy.constructor.name);
+
+            if (enemy.isDead()) {
+                console.log('☠️ Gegner ist bereits tot → keine Aktion');
+                return;
             }
-        });
 
+            this.enemyCollision(enemy);
+        });
+    }
+
+    enemyCollision(enemy) {
+        if (enemy instanceof SmallChicken || enemy instanceof Chicken) {
+            this.chickenCollision(enemy);
+        } else {
+            console.log('Kollision mit anderem Gegner → Character nimmt Schaden');
+            this.damageCharacter();
+        }
+    }
+
+    chickenCollision(chicken) {
+        if (chicken.isHitFromAbove(this.character)) {
+            chicken.die();
+        } else {
+            this.damageCharacter();
+        }
+    }
+
+    damageCharacter() {
+        this.character.hit();
+        this.healthBar.setPercentage(this.character.energy);
+    }
+
+    cleanupEnemies() {
         let before = this.level.enemies.length;
         this.level.enemies = this.level.enemies.filter(e => !e.markedForDeletion);
         let after = this.level.enemies.length;
@@ -118,45 +136,47 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         if (!this.gameStarted) {
             this.drawStartScreen();
-        } else {
-            this.ctx.translate(this.camera_x, 0);
-            this.addObjectsToMap(this.level.backgroundObjects);
-            this.addObjectsToMap(this.level.clouds);
-
-            this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.healthBar);
-            this.ctx.translate(this.camera_x, 0);
-            this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.coinBar);
-            this.ctx.translate(this.camera_x, 0);
-            this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.bottleBar);
-            this.ctx.translate(this.camera_x, 0);
-            this.ctx.translate(-this.camera_x, 0);
-            this.addToMap(this.endbossBar);
-            this.ctx.translate(this.camera_x, 0);
-
-            this.addObjectsToMap(this.level.coins);
-            this.addObjectsToMap(this.level.bottles);
-            
-            this.addToMap(this.character);
-            this.addObjectsToMap(this.level.enemies);
-            this.addObjectsToMap(this.throwableObjects);
-
-            if (this.level.endboss) {
-                this.level.endboss.checkCameraPosition(this.camera_x, 3200);
-            }
-           
-            this.ctx.translate(-this.camera_x, 0);
+            return requestAnimationFrame(() => this.draw());
         }
-        //draw() wird immer wieder aufgerufen
-        let self = this;
-        requestAnimationFrame(function() {      // genaue erklärung in Video 10 Sektion 2 Modul 12!
-            self.draw();
-        });
+        this.ctx.translate(this.camera_x, 0);
+        this.drawBackground();
+        this.drawMovableObjects();
+        this.drawCharacterAndEnemies();
+        this.checkEndbossCamera();
+        this.ctx.translate(-this.camera_x, 0);
+        this.drawBars();
+        requestAnimationFrame(() => this.draw());
+    }
+
+    drawBackground() {
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
+    }
+
+    drawMovableObjects() {
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.throwableObjects);
+    }
+
+    drawCharacterAndEnemies() {
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+    }
+
+    drawBars() {
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+        this.addToMap(this.endbossBar);
+    }
+
+    checkEndbossCamera() {
+        if (this.level.endboss) {
+            this.level.endboss.checkCameraPosition(this.camera_x, 3200);
+        }
     }
 
     addObjectsToMap(objects) {
