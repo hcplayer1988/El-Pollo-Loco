@@ -12,9 +12,5 @@ class Coinbar extends Statusbar {
         ];
         super(coinImages, 0);
         this.y = 40;
-    }
-
-
-
-    
+    }  
 }

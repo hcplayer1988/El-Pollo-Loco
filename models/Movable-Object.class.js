@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
 
     applyGravity() { 
         setInterval( () => {
+            this.lastBottomBeforeHit = this.y + this.height;
             if (this.isAboveGround() || this.speedY > 0)
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
@@ -32,17 +33,20 @@ class MovableObject extends DrawableObject {
     }
 
     hit() {
-        this.energy -= 5;
+        let now = new Date().getTime();
+        if (now - this.lastHit < 300) return;
+        this.energy -= 2;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
-            this.lastHit = new Date().getTime();
+            this.lastHit = now;
             this.hurtAnimationTriggered = true;
             setTimeout(() => {
                 this.hurtAnimationTriggered = false;
-            }, 1000);
+            }, 500);
         }
     }
+
 
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit; // difference in ms
@@ -73,4 +77,5 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 }
+
 

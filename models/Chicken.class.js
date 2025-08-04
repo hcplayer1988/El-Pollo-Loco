@@ -5,13 +5,13 @@ class Chicken extends MovableObject {
     height = 50;
 
     offset = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
+        top: 10,
+        left: 10,
+        right: 10,
+        bottom: 5
     };
 
-    damage = 10;
+    damage = 5;
     dead = false;
     markedForDeletion = false;
 
@@ -43,9 +43,9 @@ class Chicken extends MovableObject {
                 this.moveLeft();
                 this.playAnimation(this.images_walking);
             } else {
-                this.img = this.imageCache[this.images_dead[0]]; // oder playDeadAnimation()
+                this.img = this.imageCache[this.images_dead[0]];
             }
-        }, 1000 / 20); // läuft konstant & reagiert schnell
+        }, 1000 / 15);
     }
 
 
@@ -54,10 +54,21 @@ class Chicken extends MovableObject {
     }
 
     isHitFromAbove(character) {
-        return character.y + character.height < this.y + 60 &&
-            character.x + character.width > this.x &&
-            character.x < this.x + this.width;
+        let characterBottom = character.y + character.height;
+        let chickenTop = this.y + this.offset.top;
+
+        let horizontalOverlap =
+            character.x + character.width > this.x + this.offset.left &&
+            character.x < this.x + this.width - this.offset.right;
+
+        let verticalHit =
+            characterBottom < chickenTop + 38 && // Toleranzbereich
+            character.y < this.y &&              // Charakter ist wirklich über dem Huhn
+            character.speedY < 0;               // Charakter fällt oder bewegt sich leicht nach unten
+
+        return horizontalOverlap && verticalHit;
     }
+
 
     die() {
         this.dead = true;
@@ -66,7 +77,17 @@ class Chicken extends MovableObject {
         this.img = this.imageCache[this.images_dead[0]];
         setTimeout(() => {
             this.markedForDeletion = true;
-        }, 1000);
+        }, 300);
+    }
+
+    checkCollisionWithChicken(chicken) {
+        if (this.isColliding(chicken)) {
+            if (!chicken.isDead() && !chicken.isHitFromAbove(this)) {
+                this.hit()
+            } else if (!chicken.isDead() && chicken.isHitFromAbove(this)) {
+                chicken.die();
+            }
+        }
     }
     
 }

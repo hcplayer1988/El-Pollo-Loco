@@ -39,12 +39,13 @@ class Character extends MovableObject {
     currentImage = 0;
     world;
     speed = 4;
+    lastBottomBeforeHit = null;
 
     offset = {
-        top: 50,
+        top: 0,
         left: 10,
         right: 10,
-        bottom: 5
+        bottom: 6
     };
 
     constructor() {
@@ -59,6 +60,7 @@ class Character extends MovableObject {
 
     animate() {
         setInterval( () => {
+            this.lastBottomBeforeHit = this.y + this.height;
             this.walking_sound.pause();
             // walking right
             if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
@@ -66,7 +68,6 @@ class Character extends MovableObject {
                 this.otherDirection = false;
                 this.walking_sound.play();
             }
-
             // walking left
             if (this.world.keyboard.a_left && this.x > -600) {
                 this.moveLeft();
@@ -78,8 +79,7 @@ class Character extends MovableObject {
             if(this.world.keyboard.w_jump && !this.isAboveGround()) {
                 this.jump();
             }
-
-            this.world.camera_x = -this.x +80;
+            this.world.camera_x = -this.x + 150;
         }, 1000 / 60);
 
         setInterval(() => {
@@ -96,4 +96,6 @@ class Character extends MovableObject {
             }   
         }, 1000 / 25);
     }
+
 }
+

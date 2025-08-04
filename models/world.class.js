@@ -12,6 +12,7 @@ class World {
     endbossBar = new Endbossbar();    
     throwableObjects = [];
     startImage = new Image();
+    bottlesCollected = 0;
     
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -35,45 +36,79 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-        }, 80);
+        }, 1000 / 60); // 60 FPS
     }
 
     checkThrowObjects() {
         if (!this.level || !this.gameStarted) return; // check the beginn of the game
         
-        if (this.keyboard.space_shoot) {
-            let bottle = new  ThrowableObject(this.character.x + 40, this.character.y + 50 );
+        if (this.keyboard.space_shoot && !this.throwCooldown && this.bottlesCollected > 0) {
+            let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 50);
             this.throwableObjects.push(bottle);
+            this.bottlesCollected--;
+            this.bottleBar.setPercentage(this.bottlesCollected * 20);
+
+            this.throwCooldown = true; // Sperre aktivieren
+
+            setTimeout(() => {
+                this.throwCooldown = false; // Sperre nach 300ms wieder freigeben
+            }, 300);
         }
+
     }
 
     checkCollisions() {
         if (!this.level || !this.gameStarted) return;
 
-        this.level.enemies.forEach((enemy) => {
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.level.coins.splice(index, 1);
+                this.coinBar.setPercentage(this.coinBar.percentage + 20);
+            }
+        });
+
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.character.isColliding(bottle)) {
+                console.log('Bottle eingesammelt!');
+                this.level.bottles.splice(index, 1); // Bottle entfernen
+                this.bottlesCollected++;
+                this.bottleBar.setPercentage(this.bottleBar.percentage + 20); // Bottlebar erhöhen
+            }
+        });
+
+        this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
-            // Chicken-Kollision speziell behandeln
-            if (enemy instanceof Chicken || SmallChicken && !enemy.isDead()) {  
-                if (enemy.isHitFromAbove(this.character)) {
-                    enemy.die();
+                console.log('Kollision erkannt mit:', enemy.constructor.name);
+
+                if (!enemy.isDead()) {
+                    if (enemy instanceof SmallChicken || enemy instanceof Chicken) {
+                        if (enemy.isHitFromAbove(this.character)) {
+                            // Charakter springt von oben auf das Huhn
+                            enemy.die();
+                        } else {
+                            // Charakter trifft das Huhn seitlich
+                            this.character.hit();
+                            this.healthBar.setPercentage(this.character.energy);
+                        }
+                    } else {
+                        console.log('Kollision mit anderem Gegner → Character nimmt Schaden');
+                        this.character.hit();
+                        this.healthBar.setPercentage(this.character.energy);
+                    }
                 } else {
-                    this.character.hit();
-                    this.healthBar.setPercentage(this.character.energy);
+                    console.log('☠️ Gegner ist bereits tot → keine Aktion');
                 }
             }
-            // Andere Gegner (nicht Chicken)
-            else if (!enemy.isDead()) {
-                this.character.hit();
-                this.healthBar.setPercentage(this.character.energy);
-            }
+        });
+
+        let before = this.level.enemies.length;
+        this.level.enemies = this.level.enemies.filter(e => !e.markedForDeletion);
+        let after = this.level.enemies.length;
+
+        if (before !== after) {
+            console.log(`${before - after} Gegner entfernt (markedForDeletion)`);
         }
-    });
-
-    this.level.enemies = this.level.enemies.filter(enemy => !enemy.markedForDeletion);
-}
-
-
-
+    }
 
     drawStartScreen() {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
@@ -134,11 +169,9 @@ class World {
         if (mo.otherDirection) {
             this.flipImage(mo);
         }
-        
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
         mo.drawHitFrame(this.ctx);
-        
         if (mo.otherDirection) {
             this.flipImageBack(mo);
         }

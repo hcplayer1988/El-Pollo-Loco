@@ -1,16 +1,17 @@
+
 class SmallChicken extends MovableObject {
-    y = 395;
+    y = 392;
     width = 30;
     height = 30;
 
     offset = {
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 1,
+        left: 3,
+        right: 3,
         bottom: 0
     };
 
-    damage = 5;
+    damage = 2;
     dead = false;
     markedForDeletion = false;
     
@@ -29,8 +30,8 @@ class SmallChicken extends MovableObject {
     constructor() {
         super().loadImage('assets/img/ingame_imgs/3.enemies.chicken/chicken_normal/1_walk/1_w.png')
         this.loadImages(this.images_walking);
-        this.x = 650 + Math.random() * 900; // sorgt dafür das die Hühnchen immer an einer zufälligen stellle auf der xachse zwischen 200 und 700 pixeln erscheinen
-        this.speed = 0.02 + Math.random() * 0.25; // sorgt dafür das sich die geschwindigkeit jedes Hühnchens zufällig zwischen 0.03 und 0.28 bewegt
+        this.x = 650 + Math.random() * 900; 
+        this.speed = 0.02 + Math.random() * 0.25; 
         this.animate();
     }
 
@@ -40,21 +41,40 @@ class SmallChicken extends MovableObject {
                 this.moveLeft();
                 this.playAnimation(this.images_walking);
             } else {
-                this.img = this.imageCache[this.images_dead[0]]; // oder playDeadAnimation()
+                this.img = this.imageCache[this.images_dead[0]];
             }
-        }, 1000 / 20); // läuft konstant & reagiert schnell
+        }, 1000 / 20); 
     }
-
 
     isDead() {
         return this.dead;
     }
 
     isHitFromAbove(character) {
-        return character.y + character.height < this.y + 50 &&
-            character.x + character.width > this.x &&
-            character.x < this.x + this.width;
+        let characterBottom = character.y + character.height;
+        let chickenTop = this.y + this.offset.top;
+
+        let horizontalOverlap =
+            character.x + character.width > this.x + this.offset.left &&
+            character.x < this.x + this.width - this.offset.right;
+
+        let verticalHit =
+            characterBottom < chickenTop + 32 && // Toleranzbereich
+            character.y < this.y &&              // Charakter ist wirklich über dem Huhn
+            character.speedY < 0;               // Charakter fällt oder bewegt sich leicht nach unten
+
+        console.log({
+            characterBottom,
+            chickenTop,
+            speedY: character.speedY,
+            horizontalOverlap,
+            verticalHit,
+            result: horizontalOverlap && verticalHit
+        });
+
+        return horizontalOverlap && verticalHit;
     }
+
 
     die() {
         this.dead = true;
@@ -63,7 +83,17 @@ class SmallChicken extends MovableObject {
         this.img = this.imageCache[this.images_dead[0]];
         setTimeout(() => {
             this.markedForDeletion = true;
-        }, 1000);
+        }, 300);
+    }
+
+    checkCollisionWithChicken(chicken) {
+        if (this.isColliding(chicken)) {
+            if (!chicken.isDead() && !chicken.isHitFromAbove(this)) {
+                this.hit();
+            } else if (!chicken.isDead() && chicken.isHitFromAbove(this)) {
+                chicken.die();
+            }
+        }
     }
     
 }

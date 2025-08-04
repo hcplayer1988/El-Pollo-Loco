@@ -60,7 +60,7 @@ class Endboss extends MovableObject {
     alertPhaseActive = true;
     currentImages = this.images_alert;
     world;
-   
+    energy = 100;
 
 
     constructor() {
@@ -118,6 +118,10 @@ class Endboss extends MovableObject {
             this.speed = 0.3;
             this.currentImages = this.images_alert;
         }
+    }
+
+    hit(damage) {
+        this.energy = Math.max(this.energy - damage, 0);
     }
 
 }

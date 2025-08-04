@@ -14,5 +14,8 @@ class Endbossbar extends Statusbar {
         this.x = 490;
         
     }
+
+
+
     
 }
