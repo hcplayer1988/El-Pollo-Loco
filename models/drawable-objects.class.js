@@ -28,11 +28,11 @@ class DrawableObject {
     drawFrame(ctx) {
 
         if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle){
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.lineWidth = '0';
+            // ctx.strokeStyle = 'blue';
+            // ctx.rect(this.x, this.y, this.width, this.height);
+            // ctx.stroke();
         }
     }
 
@@ -44,11 +44,11 @@ class DrawableObject {
             let width = this.width - this.offset.left - this.offset.right;
             let height = this.height - this.offset.top - this.offset.bottom;
 
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = 'green';
-            ctx.rect(x, y, width, height);
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.lineWidth = '1';
+            // ctx.strokeStyle = 'green';
+            // ctx.rect(x, y, width, height);
+            // ctx.stroke();
         }
 
     }

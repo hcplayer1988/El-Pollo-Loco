@@ -98,11 +98,9 @@ class World {
         if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
             enemy.energy = 0;
             enemy.markedForDeletion = true;
-            console.log(`💥 ${enemy.constructor.name} durch Flasche getötet`);
         } else if (enemy instanceof Endboss) {
-            enemy.hit(20);
+            enemy.hit(16.67);
             this.endbossBar.setPercentage(enemy.energy);
-            console.log(`🔥 Endboss getroffen! Energie: ${enemy.energy}`);
         }
     }
 
@@ -122,10 +120,9 @@ class World {
     checkBottleCollisions() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
-                console.log('Bottle eingesammelt!');
                 this.level.bottles.splice(index, 1);
                 this.bottlesCollected++;
-                this.bottleBar.setPercentage(this.bottleBar.percentage + 20);
+                this.bottleBar.setPercentage(this.bottleBar.percentage + 12.5);
             }
         });
     }
@@ -133,14 +130,9 @@ class World {
     checkEnemyCollisions() {
         this.level.enemies.forEach(enemy => {
             if (!this.character.isColliding(enemy)) return;
-
-            console.log('Kollision erkannt mit:', enemy.constructor.name);
-
             if (enemy.isDead()) {
-                console.log('☠️ Gegner ist bereits tot → keine Aktion');
                 return;
             }
-
             this.enemyCollision(enemy);
         });
     }
@@ -148,8 +140,7 @@ class World {
     enemyCollision(enemy) {
         if (enemy instanceof SmallChicken || enemy instanceof Chicken) {
             this.chickenCollision(enemy);
-        } else {
-            console.log('Kollision mit anderem Gegner → Character nimmt Schaden');
+        } else {;
             this.damageCharacter();
         }
     }
@@ -173,7 +164,6 @@ class World {
         let after = this.level.enemies.length;
 
         if (before !== after) {
-            console.log(`${before - after} Gegner entfernt (markedForDeletion)`);
         }
     }
 
