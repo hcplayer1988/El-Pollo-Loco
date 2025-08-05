@@ -12,7 +12,7 @@ class Endboss extends MovableObject {
         bottom: 5
     };
 
-    damage = 20;
+    damage = 25;
     
     images_alert = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png',
@@ -115,7 +115,7 @@ class Endboss extends MovableObject {
             this.currentImages = this.images_alert;
             return;
         }
-        let closeToCharacter = this.getDistanceToCharacter() < 250;
+        let closeToCharacter = this.getDistanceToCharacter() < 350;
         let weakened = this.energy <= 50;
         if (closeToCharacter || weakened) {
             this.attackMode = true;
@@ -138,10 +138,6 @@ class Endboss extends MovableObject {
             this.updateState();
         }, 300);
     }
-
-    // isDead() {
-    //     return this.dead;
-    // }
 
     die() {
         this.energy = 0;

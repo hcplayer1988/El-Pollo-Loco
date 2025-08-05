@@ -11,7 +11,7 @@ class Chicken extends MovableObject {
         bottom: 5
     };
 
-    damage = 5;
+    damage = 10;
     dead = false;
     markedForDeletion = false;
 

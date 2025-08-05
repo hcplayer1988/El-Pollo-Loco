@@ -103,7 +103,7 @@ class World {
                 enemy.hit(16.67);
                 this.endbossBar.setPercentage(enemy.energy);
                 if (enemy.energy <= 0) {
-                    enemy.die(); // Zeige die Todesanimation für 1500ms, dann entfernen
+                    enemy.die();
                 }
             }
         }
@@ -145,8 +145,8 @@ class World {
     enemyCollision(enemy) {
         if (enemy instanceof SmallChicken || enemy instanceof Chicken) {
             this.chickenCollision(enemy);
-        } else {;
-            this.damageCharacter();
+        } else {
+            this.damageCharacter(enemy);
         }
     }
 
@@ -154,12 +154,12 @@ class World {
         if (chicken.isHitFromAbove(this.character)) {
             chicken.die();
         } else {
-            this.damageCharacter();
+            this.damageCharacter(chicken);
         }
     }
 
-    damageCharacter() {
-        this.character.hit();
+    damageCharacter(enemy) {
+        this.character.hit(enemy.damage);
         this.healthBar.setPercentage(this.character.energy);
     }
 

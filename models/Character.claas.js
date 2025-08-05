@@ -109,21 +109,18 @@ class Character extends MovableObject {
     this.lastBottomBeforeHit = this.y + this.height;
     this.walking_sound.pause();
     this.actionOccurred = false;
-
     if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
         this.walking_sound.play();
         this.actionOccurred = true;
     }
-
     if (this.world.keyboard.a_left && this.x > -600) {
         this.moveLeft();
         this.otherDirection = true;
         this.walking_sound.play();
         this.actionOccurred = true;
     }
-
     if (this.world.keyboard.w_jump && !this.isAboveGround()) {
         this.jump();
         this.actionOccurred = true;

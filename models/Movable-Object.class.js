@@ -18,7 +18,7 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        if (this instanceof ThrowableObject) {  // Throwable object should always fall
+        if (this instanceof ThrowableObject) { 
             return true;
         } else {
             return this.y < 270
@@ -26,16 +26,16 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&    // rechte kante pepe zu linke kante enemy
-            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&      // unterkante pepe ztu oberkante enemy
-            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&         // linke kante pepe zu rechter kante enemy
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;           // oberkante pepe zu untere kante enemy (wird hier nicht benötigt)
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
 
-    hit() {
+    hit(damage) {
         let now = new Date().getTime();
         if (now - this.lastHit < 300) return;
-        this.energy -= 2;
+        this.energy -= damage;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
@@ -47,10 +47,8 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit; // difference in ms
-        //timepassed = timepassed / 1000; // difference in s
+        let timepassed = new Date().getTime() - this.lastHit;
         return timepassed < 500;
     }
 
@@ -59,7 +57,7 @@ class MovableObject extends DrawableObject {
     }
 
     playAnimation(images) {
-        let i = this.currentImage % images.length; // let i = 7 % 6; => 1, rest 1 ==> i = 0, 1, 2, 3, 4 , 5, 0, 1, 2, 3, 4, 5, 0, .....usw.
+        let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;

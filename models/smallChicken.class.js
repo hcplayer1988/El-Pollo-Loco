@@ -11,7 +11,7 @@ class SmallChicken extends MovableObject {
         bottom: 0
     };
 
-    damage = 2;
+    damage = 5;
     dead = false;
     markedForDeletion = false;
     
@@ -53,11 +53,9 @@ class SmallChicken extends MovableObject {
     isHitFromAbove(character) {
         let characterBottom = character.y + character.height;
         let chickenTop = this.y + this.offset.top;
-
         let horizontalOverlap =
             character.x + character.width > this.x + this.offset.left &&
             character.x < this.x + this.width - this.offset.right;
-
         let verticalHit =
             characterBottom < chickenTop + 32 &&
             character.y < this.y &&
