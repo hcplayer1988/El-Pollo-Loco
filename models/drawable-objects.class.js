@@ -50,7 +50,6 @@ class DrawableObject {
             // ctx.rect(x, y, width, height);
             // ctx.stroke();
         }
-
     }
 
     loadImages(arr) {

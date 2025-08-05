@@ -97,7 +97,8 @@ class World {
     handleBottleHit(enemy) {
         if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
             enemy.energy = 0;
-            enemy.markedForDeletion = true;
+            enemy.die();
+            //enemy.markedForDeletion = true;
         } else if (enemy instanceof Endboss) {
             enemy.hit(16.67);
             this.endbossBar.setPercentage(enemy.energy);

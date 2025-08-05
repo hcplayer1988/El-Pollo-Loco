@@ -32,8 +32,8 @@ class Chicken extends MovableObject {
     constructor() {
         super().loadImage('assets/img/ingame_imgs/3.enemies.chicken/chicken_normal/1_walk/1_w.png')
         this.loadImages(this.images_walking);
-        this.x = 1400 + Math.random() * 2200; // sorgt dafür das die Hühnchen immer an einer zufälligen stellle auf der xachse zwischen 200 und 700 pixeln erscheinen
-        this.speed = 0.02 + Math.random() * 0.30; // sorgt dafür das sich die geschwindigkeit jedes Hühnchens zufällig zwischen 0.03 und 0.28 bewegt
+        this.x = 1400 + Math.random() * 2200;
+        this.speed = 0.02 + Math.random() * 0.30;
         this.animate();
     }
 
@@ -48,7 +48,6 @@ class Chicken extends MovableObject {
         }, 1000 / 15);
     }
 
-
     isDead() {
         return this.dead;
     }
@@ -56,19 +55,15 @@ class Chicken extends MovableObject {
     isHitFromAbove(character) {
         let characterBottom = character.y + character.height;
         let chickenTop = this.y + this.offset.top;
-
         let horizontalOverlap =
             character.x + character.width > this.x + this.offset.left &&
             character.x < this.x + this.width - this.offset.right;
-
         let verticalHit =
-            characterBottom < chickenTop + 38 && // Toleranzbereich
-            character.y < this.y &&              // Charakter ist wirklich über dem Huhn
-            character.speedY < 0;               // Charakter fällt oder bewegt sich leicht nach unten
-
+            characterBottom < chickenTop + 38 &&
+            character.y < this.y &&
+            character.speedY < 0;
         return horizontalOverlap && verticalHit;
     }
-
 
     die() {
         this.dead = true;
@@ -89,5 +84,4 @@ class Chicken extends MovableObject {
             }
         }
     }
-    
 }

@@ -59,19 +59,9 @@ class SmallChicken extends MovableObject {
             character.x < this.x + this.width - this.offset.right;
 
         let verticalHit =
-            characterBottom < chickenTop + 32 && // Toleranzbereich
-            character.y < this.y &&              // Charakter ist wirklich über dem Huhn
-            character.speedY < 0;               // Charakter fällt oder bewegt sich leicht nach unten
-
-        console.log({
-            characterBottom,
-            chickenTop,
-            speedY: character.speedY,
-            horizontalOverlap,
-            verticalHit,
-            result: horizontalOverlap && verticalHit
-        });
-
+            characterBottom < chickenTop + 32 &&
+            character.y < this.y &&
+            character.speedY < 0;
         return horizontalOverlap && verticalHit;
     }
 

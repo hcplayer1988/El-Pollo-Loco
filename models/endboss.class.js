@@ -78,40 +78,11 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
-    // animate() {
-    //     setInterval(() => {
-    //         if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
-    //             this.alertTriggered = true;
-    //             this.alertPhaseActive = true;
-
-    //             setTimeout(() => {
-    //                 this.alertPhaseActive = false;
-    //             }, 2000); // Alertphase is 2 seconds
-    //         }
-
-    //         if (!this.isDead() && !this.alertPhaseActive) {
-    //             this.moveLeft();
-    //         }
-    //     }, 1000 / 100);
-
-    //     setInterval(() => {
-    //         this.updateState();
-    //         this.playAnimation(this.currentImages);
-    //     }, 200);
-    //     setInterval(() => {
-    //         if (!this.isHurt) {
-    //             this.updateState();
-    //         }
-    //         this.playAnimation(this.currentImages);
-    //     }, 200);
-    // }
-
     animate() {
         setInterval(() => {
             if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
                 this.alertTriggered = true;
                 this.alertPhaseActive = true;
-
                 setTimeout(() => {
                     this.alertPhaseActive = false;
                 }, 2000);
