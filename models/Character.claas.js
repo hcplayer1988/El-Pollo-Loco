@@ -42,7 +42,7 @@ class Character extends MovableObject {
     lastBottomBeforeHit = null;
 
     offset = {
-        top: 0,
+        top: 50,
         left: 10,
         right: 10,
         bottom: 6

@@ -16,5 +16,6 @@ class Bottle extends MovableObject {
         super();
         this.loadImage('assets/img/ingame_imgs/6.salsa.bottle/2_salsa_bottle_on_ground.png');
         this.x = 500 + Math.random() * 2900;
+        this.y = 360 - Math.random() * 250;
     }
 }
