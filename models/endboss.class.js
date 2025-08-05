@@ -4,16 +4,13 @@ class Endboss extends MovableObject {
     y = 145;
     width = 280;
     height = 290;
-
     offset = {
         top: 40,
         left: 10,
         right: 0,
         bottom: 5
     };
-
     damage = 25;
-    
     images_alert = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G6.png',
@@ -24,7 +21,6 @@ class Endboss extends MovableObject {
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G11.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G12.png'
     ];
-
     images_walking = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G1.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G2.png',
@@ -32,7 +28,6 @@ class Endboss extends MovableObject {
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G4.png',
 
     ];
-
     images_attack = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G13.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G14.png',
@@ -43,19 +38,16 @@ class Endboss extends MovableObject {
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G19.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G20.png'
     ];
-
     images_hurt = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G21.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G22.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G23.png'
     ];
-
     images_dead = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G24.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G25.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G26.png'
     ];
-
     attackMode = false;
     alertPhaseActive = true;
     currentImages = this.images_alert;
@@ -64,7 +56,6 @@ class Endboss extends MovableObject {
     markedForDeletion = false;
     dead = false;
     energy = 100;
-
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png')
@@ -81,18 +72,30 @@ class Endboss extends MovableObject {
     }
 
     animate() {
+    this.startMovementLoop();
+    this.startAnimationLoop();
+    }
+
+    startMovementLoop() {
         setInterval(() => {
-            if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
-                this.alertTriggered = true;
-                this.alertPhaseActive = true;
-                setTimeout(() => {
-                    this.alertPhaseActive = false;
-                }, 2000);
-            }
+            this.checkAlertTrigger();
             if (!this.isDead() && !this.alertPhaseActive) {
                 this.moveLeft();
             }
         }, 1000 / 100);
+    }
+
+    checkAlertTrigger() {
+        if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
+            this.alertTriggered = true;
+            this.alertPhaseActive = true;
+            setTimeout(() => {
+                this.alertPhaseActive = false;
+            }, 2000);
+        }
+    }
+
+    startAnimationLoop() {
         setInterval(() => {
             if (!this.isHurt) {
                 this.updateState();
@@ -106,16 +109,30 @@ class Endboss extends MovableObject {
     }
 
     updateState() {
+    if (this.handleDeath()) return;
+    if (this.handleAlertPhase()) return;
+    this.handleCombatState();
+    }
+
+    handleDeath() {
         if (this.isDead()) {
             this.currentImages = this.images_dead;
-            return;
+            return true;
         }
+        return false;
+    }
+
+    handleAlertPhase() {
         if (this.alertPhaseActive) {
             this.attackMode = false;
             this.currentImages = this.images_alert;
-            return;
+            return true;
         }
-        let closeToCharacter = this.getDistanceToCharacter() < 350;
+        return false;
+    }
+
+    handleCombatState() {
+        let closeToCharacter = this.getDistanceToCharacter() < 300;
         let weakened = this.energy <= 50;
         if (closeToCharacter || weakened) {
             this.attackMode = true;
@@ -123,7 +140,7 @@ class Endboss extends MovableObject {
             this.currentImages = this.images_attack;
         } else {
             this.attackMode = false;
-            this.speed = 0.3;
+            this.speed = 0.5;
             this.currentImages = this.images_walking;
         }
     }
