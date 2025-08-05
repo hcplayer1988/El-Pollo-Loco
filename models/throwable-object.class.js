@@ -1,14 +1,15 @@
+
 class ThrowableObject extends MovableObject {
-
-    // imagesOnGround = [
-    //      'assets/img/ingame_imgs/6.salsa.bottle/2_salsa_bottle_on_ground.png'
-    // ];
-
+    images_rotate = [
+        'assets/img/ingame_imgs/6.salsa.bottle/bottle_rotation/1_bottle_rotation.png',
+        'assets/img/ingame_imgs/6.salsa.bottle/bottle_rotation/2_bottle_rotation.png',
+        'assets/img/ingame_imgs/6.salsa.bottle/bottle_rotation/3_bottle_rotation.png',
+        'assets/img/ingame_imgs/6.salsa.bottle/bottle_rotation/4_bottle_rotation.png'
+    ];
 
     constructor(x, y) {
-        super().loadImage('assets/img/ingame_imgs/6.salsa.bottle/2_salsa_bottle_on_ground.png')
-        // this.loadImages(this.imagesOnGround);
-        // this.x = 100 + Math.random() * 1500;
+        super().loadImage('assets/img/ingame_imgs/6.salsa.bottle/bottle_rotation/1_bottle_rotation.png')
+        this.loadImages(this.images_rotate);
         this.x = x;
         this.y = y;
         this.width = 60;
@@ -16,12 +17,28 @@ class ThrowableObject extends MovableObject {
         this.trow();
     }
 
+    // trow() {
+    //     this.speedY = 30;
+    //     this.applyGravity();
+    //     setInterval( () => {
+    //         this.x += 10;
+    //     }, 25);
+        
+    // }
+
     trow() {
         this.speedY = 30;
         this.applyGravity();
-        setInterval( () => {
+
+        // Bewegung nach rechts
+        setInterval(() => {
             this.x += 10;
         }, 25);
-        
+
+        // Rotationsanimation
+        setInterval(() => {
+            this.playAnimation(this.images_rotate);
+        }, 1000 / 20); // 20 FPS – kannst du anpassen
     }
+
 }
