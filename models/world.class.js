@@ -13,16 +13,18 @@ class World {
     throwableObjects = [];
     startImage = new Image();
     bottlesCollected = 0;
-    
+    throw_bottle_sound = new Audio('audio/throw_bottle.mp3');
+    collect_coin_sound = new Audio('audio/collect_coin.mp3');
+    collect_bottle_sound = new Audio('audio/collect_bottle.mp3');
+    background_sound = new Audio('audio/wildwest-soundtrack-acoustic-guitar-69109.mp3');
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.startImage.src = './assets/img/ingame_imgs/9.intro_outro_screens/start.screen/startscreen.1.png'
-        
         this.setWorld();
         this.run();
-
         this.startImage.onload = () => {
             this.draw();
         }
@@ -60,6 +62,7 @@ class World {
     }
 
     throwBottle(bottle) {
+        this.throw_bottle_sound.play();
         this.throwableObjects.push(bottle);
         this.bottlesCollected--;
         this.bottleBar.setPercentage(this.bottlesCollected * 20);
@@ -118,6 +121,7 @@ class World {
             if (this.character.isColliding(coin)) {
                 this.level.coins.splice(index, 1);
                 this.coinBar.setPercentage(this.coinBar.percentage + 20);
+                this.collect_coin_sound.play();
             }
         });
     }
@@ -128,6 +132,7 @@ class World {
                 this.level.bottles.splice(index, 1);
                 this.bottlesCollected++;
                 this.bottleBar.setPercentage(this.bottleBar.percentage + 12.5);
+                this.collect_bottle_sound.play();
             }
         });
     }

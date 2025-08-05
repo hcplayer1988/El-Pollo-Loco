@@ -14,8 +14,7 @@ class SmallChicken extends MovableObject {
     damage = 5;
     dead = false;
     markedForDeletion = false;
-    
-
+    dead_sound = new Audio('audio/destroy_chicken.mp3');
     images_walking = [
         'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/1_w.png',
         'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/1_walk/2_w.png',
@@ -67,6 +66,7 @@ class SmallChicken extends MovableObject {
     die() {
         this.dead = true;
         this.speed = 0;
+        this.dead_sound.play();
         this.loadImages(this.images_dead);
         this.img = this.imageCache[this.images_dead[0]];
         setTimeout(() => {

@@ -60,12 +60,11 @@ class Character extends MovableObject {
     ];
 
     walking_sound = new Audio('audio/fast_walk_sand.mp3');
+    jump_sound = new Audio('audio/jump.mp3');   
     currentImage = 0;
     world;
     speed = 4;
     lastBottomBeforeHit = null;
-    //bottle = new ThrowableObject(this.x, this.y, this.otherDirection);
-
     offset = {
         top: 50,
         left: 10,
@@ -102,30 +101,7 @@ class Character extends MovableObject {
         setInterval(() => {
             this.handleIdleAnimation();
         }, 1000 / 10);
-}
-
-
-    // handleMovement() {
-    //     this.lastBottomBeforeHit = this.y + this.height;
-    //     this.walking_sound.pause();
-    //     this.actionOccurred = false;
-    //     if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
-    //         this.moveRight();
-    //         this.otherDirection = false;
-    //         this.walking_sound.play();
-    //         this.actionOccurred = true;
-    //     }
-    //     if (this.world.keyboard.a_left && this.x > -600) {
-    //         this.moveLeft();
-    //         this.otherDirection = true;
-    //         this.walking_sound.play();
-    //         this.actionOccurred = true;
-    //     }
-    //     if (this.world.keyboard.w_jump && !this.isAboveGround()) {
-    //         this.jump();
-    //         this.actionOccurred = true;
-    //         }
-    // }
+    }
 
     handleMovement() {
         this.lastBottomBeforeHit = this.y + this.height;
@@ -157,12 +133,12 @@ class Character extends MovableObject {
 
     handleJump() {
         if (this.world.keyboard.w_jump && !this.isAboveGround()) {
+            this.jump_sound.currentTime = 0; // Optional: Startet den Sound von vorne
+            this.jump_sound.play();
             this.jump();
             this.actionOccurred = true;
         }
     }
-
-
 
     updateCamera() {
         this.world.camera_x = -this.x + 100;

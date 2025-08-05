@@ -11,8 +11,9 @@ function init() {
             world.gameStarted = true;
             initLevel();
             world.level = level1;
+            world.background_sound.loop = true;
+            world.background_sound.play();
         }
-    
     });
 };
 
