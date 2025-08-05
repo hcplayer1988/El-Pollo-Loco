@@ -98,10 +98,14 @@ class World {
         if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
             enemy.energy = 0;
             enemy.die();
-            //enemy.markedForDeletion = true;
         } else if (enemy instanceof Endboss) {
-            enemy.hit(16.67);
-            this.endbossBar.setPercentage(enemy.energy);
+            if (!enemy.isDead()) {
+                enemy.hit(16.67);
+                this.endbossBar.setPercentage(enemy.energy);
+                if (enemy.energy <= 0) {
+                    enemy.die(); // Zeige die Todesanimation für 1500ms, dann entfernen
+                }
+            }
         }
     }
 

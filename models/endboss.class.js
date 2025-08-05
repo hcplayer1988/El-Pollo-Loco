@@ -61,6 +61,8 @@ class Endboss extends MovableObject {
     currentImages = this.images_alert;
     world;
     isHurt = false;
+    markedForDeletion = false;
+    dead = false;
     energy = 100;
 
 
@@ -136,5 +138,18 @@ class Endboss extends MovableObject {
             this.updateState();
         }, 300);
     }
+
+    // isDead() {
+    //     return this.dead;
+    // }
+
+    die() {
+        this.energy = 0;
+        this.currentImages = this.images_dead;
+        setTimeout(() => {
+            this.markedForDeletion = true;
+        }, 1500);
+    }
+
 }
 
