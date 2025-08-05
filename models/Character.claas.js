@@ -64,6 +64,7 @@ class Character extends MovableObject {
     world;
     speed = 4;
     lastBottomBeforeHit = null;
+    //bottle = new ThrowableObject(this.x, this.y, this.otherDirection);
 
     offset = {
         top: 50,

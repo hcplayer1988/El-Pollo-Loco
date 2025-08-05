@@ -36,21 +36,56 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-        }, 1000 / 60); // 60 FPS
+        }, 1000 / 60); 
     }
 
+    // checkThrowObjects() {
+    //     if (!this.level || !this.gameStarted) return;
+    //     if (this.keyboard.space_shoot && !this.throwCooldown && this.bottlesCollected > 0) {
+    //         let bottle = new ThrowableObject(
+    //             this.character.x + (this.character.otherDirection ? -40 : 40),
+    //             this.character.y + 50,
+    //             this.character.otherDirection 
+    //         );
+    //         this.throwableObjects.push(bottle);
+    //         this.bottlesCollected--;
+    //         this.bottleBar.setPercentage(this.bottlesCollected * 20);
+    //         this.throwCooldown = true;
+    //         setTimeout(() => {
+    //             this.throwCooldown = false;
+    //         }, 300);
+    //     }
+    // }
+
     checkThrowObjects() {
-        if (!this.level || !this.gameStarted) return; // check the beginn of the game
-        if (this.keyboard.space_shoot && !this.throwCooldown && this.bottlesCollected > 0) {
-            let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 50);
-            this.throwableObjects.push(bottle);
-            this.bottlesCollected--;
-            this.bottleBar.setPercentage(this.bottlesCollected * 20);
-            this.throwCooldown = true; // Sperre aktivieren
-            setTimeout(() => {
-                this.throwCooldown = false; // Sperre nach 300ms wieder freigeben
-            }, 300);
-        }
+        if (!this.level || !this.gameStarted) return;
+        let canThrow = this.keyboard.space_shoot &&
+                        !this.throwCooldown &&
+                        this.bottlesCollected > 0;
+        if (!canThrow) return;
+        let bottle = this.createBottle();
+        this.throwBottle(bottle);
+        this.activateThrowCooldown();
+    }
+
+    createBottle() {
+        let offsetX = this.character.otherDirection ? -40 : 40;
+        return new ThrowableObject(
+            this.character.x + offsetX,
+            this.character.y + 50,
+            this.character.otherDirection
+        );
+    }
+
+    throwBottle(bottle) {
+        this.throwableObjects.push(bottle);
+        this.bottlesCollected--;
+        this.bottleBar.setPercentage(this.bottlesCollected * 20);
+    }
+
+    activateThrowCooldown() {
+        this.throwCooldown = true;
+        setTimeout(() => this.throwCooldown = false, 300);
     }
 
     checkCollisions() {
@@ -210,18 +245,3 @@ class World {
     }
 }
 
-
-
-/* Diese forEach sschleifen werden durch die Funktion addObjectsToMap() ersetzt!!
-        this.enemies.forEach(enemy => {
-            this.addToMap(enemy)
-        });
-
-        this.clouds.forEach(cloud => {
-            this.addToMap(cloud)
-        });
-
-         this.backgroundObjects.forEach(bgo => {
-            this.addToMap(bgo)
-        });
-*/
