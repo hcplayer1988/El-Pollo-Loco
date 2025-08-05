@@ -34,6 +34,18 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/4.hurt/H-42.png',
         'assets/img/ingame_imgs/2.character.pepe/4.hurt/H-43.png'
     ];
+    images_idle = [
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-2.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-3.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-4.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-5.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-6.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-7.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-8.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-9.png',
+        'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-10.png',
+    ];
 
     walking_sound = new Audio('audio/fast_walk_sand.mp3');
     currentImage = 0;
@@ -79,7 +91,7 @@ class Character extends MovableObject {
             if(this.world.keyboard.w_jump && !this.isAboveGround()) {
                 this.jump();
             }
-            this.world.camera_x = -this.x + 150;
+            this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
