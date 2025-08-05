@@ -106,17 +106,23 @@ class Endboss extends MovableObject {
     updateState() {
         if (this.isDead()) {
             this.currentImages = this.images_dead;
-        } else if (this.alertPhaseActive) {
+            return;
+        }
+        if (this.alertPhaseActive) {
             this.attackMode = false;
             this.currentImages = this.images_alert;
-        } else if (this.energy <= 50 || this.getDistanceToCharacter() < 150) {
+            return;
+        }
+        let closeToCharacter = this.getDistanceToCharacter() < 150;
+        let weakened = this.energy <= 50;
+        if (closeToCharacter || weakened) {
             this.attackMode = true;
             this.speed = 0.8;
             this.currentImages = this.images_attack;
         } else {
             this.attackMode = false;
             this.speed = 0.3;
-            this.currentImages = this.images_alert;
+            this.currentImages = this.images_walking; // 👈 Jetzt korrekt!
         }
     }
 

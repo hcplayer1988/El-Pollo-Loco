@@ -39,24 +39,6 @@ class World {
         }, 1000 / 60); 
     }
 
-    // checkThrowObjects() {
-    //     if (!this.level || !this.gameStarted) return;
-    //     if (this.keyboard.space_shoot && !this.throwCooldown && this.bottlesCollected > 0) {
-    //         let bottle = new ThrowableObject(
-    //             this.character.x + (this.character.otherDirection ? -40 : 40),
-    //             this.character.y + 50,
-    //             this.character.otherDirection 
-    //         );
-    //         this.throwableObjects.push(bottle);
-    //         this.bottlesCollected--;
-    //         this.bottleBar.setPercentage(this.bottlesCollected * 20);
-    //         this.throwCooldown = true;
-    //         setTimeout(() => {
-    //             this.throwCooldown = false;
-    //         }, 300);
-    //     }
-    // }
-
     checkThrowObjects() {
         if (!this.level || !this.gameStarted) return;
         let canThrow = this.keyboard.space_shoot &&
