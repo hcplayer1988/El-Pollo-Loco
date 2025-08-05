@@ -60,7 +60,9 @@ class Character extends MovableObject {
     ];
 
     walking_sound = new Audio('audio/fast_walk_sand.mp3');
-    jump_sound = new Audio('audio/jump.mp3');   
+    jump_sound = new Audio('audio/jump.mp3');
+    snoring_sound = new Audio('audio/snoring.mp3');
+    hit_sound = new Audio('audio/hit_sound.mp3');
     currentImage = 0;
     world;
     speed = 4;
@@ -149,6 +151,7 @@ class Character extends MovableObject {
             this.lastActionTime = Date.now();
             this.idleLongPlayed = false;
             this.idleLongStartTime = null;
+            this.snoring_sound.pause();
         }
     }
 
@@ -160,6 +163,7 @@ class Character extends MovableObject {
 
     handleHurtOrDeathAnimation() {
         if (this.hurtAnimationTriggered) {
+            this.hit_sound.play();
             this.playAnimation(this.images_hurt);
             return true;
         }
@@ -185,8 +189,9 @@ class Character extends MovableObject {
     handleIdleAnimation() {
         let now = Date.now();
         let inactiveTime = now - this.lastActionTime;
-
-        if (inactiveTime > 5000 || this.idleLongPlayed) {
+        if (inactiveTime > 10000 || this.idleLongPlayed) {
+            this.snoring_sound.loop = true;
+            this.snoring_sound.play();
             this.playAnimation(this.images_idle_long);
             this.idleLongPlayed = true;
         } else {
