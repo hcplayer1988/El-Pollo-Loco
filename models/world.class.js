@@ -76,6 +76,38 @@ class World {
             this.checkBottleCollisions();
             this.checkEnemyCollisions();
             this.cleanupEnemies();
+            this.checkBottleHitsEnemies();
+    }
+
+    checkBottleHitsEnemies() {
+        this.throwableObjects.forEach((bottle, bottleIndex) => {
+            this.level.enemies.forEach(enemy => {
+                if (this.shouldBottleHit(bottle, enemy)) {
+                    this.handleBottleHit(enemy);
+                    this.removeBottle(bottleIndex);
+                }
+            });
+        });
+    }
+
+    shouldBottleHit(bottle, enemy) {
+        return bottle.isColliding(enemy) && !enemy.isDead();
+    }
+
+    handleBottleHit(enemy) {
+        if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+            enemy.energy = 0;
+            enemy.markedForDeletion = true;
+            console.log(`💥 ${enemy.constructor.name} durch Flasche getötet`);
+        } else if (enemy instanceof Endboss) {
+            enemy.hit(20);
+            this.endbossBar.setPercentage(enemy.energy);
+            console.log(`🔥 Endboss getroffen! Energie: ${enemy.energy}`);
+        }
+    }
+
+    removeBottle(index) {
+        this.throwableObjects.splice(index, 1);
     }
 
     checkCoinCollisions() {
