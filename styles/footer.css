@@ -1,0 +1,33 @@
+.footer {
+    background-color: #9e2132;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #ff9500;
+}
+
+.footer_content {
+    color: #ff9500;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.footer_txt {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 20px;
+    font-weight: 400;
+}
