@@ -13,14 +13,18 @@ class World {
     throwableObjects = [];
     startImage = new Image();
     youWinImage = new Image();
+    gameOverImage = new Image();
     bottlesCollected = 0;
     throw_bottle_sound = new Audio('audio/throw_bottle.mp3');
     collect_coin_sound = new Audio('audio/collect_coin.mp3');
     collect_bottle_sound = new Audio('audio/collect_bottle.mp3');
     background_sound = new Audio('audio/wildwest-soundtrack-acoustic-guitar-69109.mp3');
     winSound = new Audio('audio/game_won.mp3');
+    looseSound = new Audio('audio/game over.mp3');
     gameWonPlayed = false;
     gameWon = false;
+    gameOver = false;
+    gameOverPlayed = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -28,6 +32,7 @@ class World {
         this.keyboard = keyboard;
         this.startImage.src = './assets/img/ingame_imgs/9.intro_outro_screens/start.screen/startscreen.1.png'
         this.youWinImage.src = 'assets/img/ingame_imgs/You won, you lost/you_win_a.png'
+        this.gameOverImage.src = 'assets/img/ingame_imgs/You won, you lost/game_over A.png'
         this.setWorld();
         this.run();
         this.startImage.onload = () => {
@@ -181,7 +186,6 @@ class World {
         let after = this.level.enemies.length;
         if (before !== after) {
         }
-        //this.level.enemies = this.level.enemies.filter(e => !e.markedForDeletion || e instanceof Endboss);
     }
 
     restartGame() {
@@ -220,6 +224,15 @@ class World {
             this.drawWinScreen();
             return;
         }
+        if (this.gameStarted && this.character.isDead()) {
+            this.drawGameOverScreen();
+            return;
+        }
+        this.drawWorldObjects();
+        requestAnimationFrame(() => this.draw());
+    }
+
+    drawWorldObjects() {
         this.ctx.translate(this.camera_x, 0);
         this.drawBackground();
         this.drawMovableObjects();
@@ -227,7 +240,15 @@ class World {
         this.checkEndbossCamera();
         this.ctx.translate(-this.camera_x, 0);
         this.drawBars();
-        requestAnimationFrame(() => this.draw());
+    }
+
+    drawGameOverScreen() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.gameOverImage, 0, 0, this.canvas.width, this.canvas.height);
+        if (!this.gameOverPlayed) {
+            this.looseSound.play();
+            this.gameOverPlayed = true;
+        }
     }
 
     drawWinScreen() {

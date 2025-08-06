@@ -1,3 +1,4 @@
+
 let canvas;
 let world;
 let keyboard = new Keyboard();
@@ -13,6 +14,7 @@ function init() {
             world.level = level1;
             world.background_sound.loop = true;
             world.background_sound.play();
+            world.character.lastActionTime = Date.now();
         }
     });
 };

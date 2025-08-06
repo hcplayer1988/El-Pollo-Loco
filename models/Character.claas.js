@@ -84,7 +84,6 @@ class Character extends MovableObject {
         this.loadImages(this.images_idle_long);
         this.applyGravity();
         this.animate();
-        this.lastActionTime = Date.now();
         this.idleLongPlayed = false;
         this.idleLongStartTime = null;
     }
@@ -135,7 +134,7 @@ class Character extends MovableObject {
 
     handleJump() {
         if (this.world.keyboard.w_jump && !this.isAboveGround()) {
-            this.jump_sound.currentTime = 0; // Optional: Startet den Sound von vorne
+            this.jump_sound.currentTime = 0;
             this.jump_sound.play();
             this.jump();
             this.actionOccurred = true;
@@ -187,6 +186,9 @@ class Character extends MovableObject {
     }
 
     handleIdleAnimation() {
+        if (!this.world || !this.world.gameStarted) {
+            return;
+        }
         let now = Date.now();
         let inactiveTime = now - this.lastActionTime;
         if (inactiveTime > 10000 || this.idleLongPlayed) {
@@ -198,5 +200,4 @@ class Character extends MovableObject {
             this.playAnimation(this.images_idle);
         }
     }
-
 }
