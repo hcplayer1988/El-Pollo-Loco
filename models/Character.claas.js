@@ -105,10 +105,10 @@ class Character extends MovableObject {
     }
 
     handleMovement() {
+        if (this.world?.gameStopped) return;
         this.lastBottomBeforeHit = this.y + this.height;
         this.walking_sound.pause();
         this.actionOccurred = false;
-
         this.handleRightMovement();
         this.handleLeftMovement();
         this.handleJump();

@@ -25,6 +25,7 @@ class World {
     gameWon = false;
     gameOver = false;
     gameOverPlayed = false;
+    gameStopped = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -42,6 +43,28 @@ class World {
 
     setWorld() {
         this.character.world = this;
+    }
+
+    stopGame() {
+        this.gameStopped = true;
+        this.background_sound.pause();
+        this.background_sound.currentTime = 0;
+        window.removeEventListener("keydown", this.keydownHandler);
+        window.removeEventListener("keyup", this.keyupHandler);
+    }
+
+    checkGameEndConditions() {
+        if (this.gameStarted && this.character.isDead()) {
+            this.drawGameOverScreen();
+            this.stopGame();
+            return true;
+        }
+        if (this.gameWon) {
+            this.drawWinScreen();
+            this.stopGame();
+            return true;
+        }
+        return false;
     }
 
     run() {
@@ -211,7 +234,7 @@ class World {
     drawStartScreen() {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
         this.ctx.fillStyle = 'black';
-        this.ctx.fillText('Klicke zum Starten', this.canvas.width / 2, this.canvas.height - 50);
+        this.ctx.fillText('click to start', this.canvas.width / 2, this.canvas.height - 50);
     }
 
     draw() {
@@ -220,14 +243,7 @@ class World {
             this.drawStartScreen();
             return requestAnimationFrame(() => this.draw());
         }
-        if (this.gameWon) {
-            this.drawWinScreen();
-            return;
-        }
-        if (this.gameStarted && this.character.isDead()) {
-            this.drawGameOverScreen();
-            return;
-        }
+        if (this.checkGameEndConditions()) return;
         this.drawWorldObjects();
         requestAnimationFrame(() => this.draw());
     }
