@@ -1,0 +1,35 @@
+
+@media screen and (max-width: 800px) {
+    canvas {
+        width: 620px;
+        height: 380px;
+    }
+    
+    .ui-fixed {
+        flex-direction: column;
+    }
+
+    .soundbar img, .soundbar input {
+        top: auto;
+        left: auto;
+        position: static;
+    }
+}
+
+
+@media screen and (max-width: 680px) {
+    canvas {
+        width: 520px;
+        height: 300px;
+    }
+    
+    .ui-fixed {
+        flex-direction: column;
+    }
+
+    .soundbar img, .soundbar input {
+        top: auto;
+        left: auto;
+        position: static;
+    }
+}

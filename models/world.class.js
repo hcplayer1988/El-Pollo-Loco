@@ -60,12 +60,12 @@ class World {
     checkGameEndConditions() {
         if (this.gameStarted && this.character.isDead()) {
             this.drawGameOverScreen();
-            this.stopGame();
+            //this.stopGame();
             return true;
         }
         if (this.gameWon) {
             this.drawWinScreen();
-            this.stopGame();
+            //this.stopGame();
             return true;
         }
         return false;

@@ -7,6 +7,7 @@
     <title>El Pollo Loco</title>
 
     <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/mediaquerie.css">
     <link rel="stylesheet" href="./styles/footer.css">
 
     <script src="./models/drawable-objects.class.js"></script>
@@ -34,56 +35,59 @@
     <link rel="shortcut icon" href="assets\img\ingame_imgs\2.character.pepe\1.idle\idle\I-4.png" type="image/x-icon">
 </head>
 <body onload="init()">
-    <div class="background">
-        <h1>EL POLLO LOCO</h1>
+    <div class="page_wrapper">
+        <main class="content">
+            <div class="background">
+                <h1>EL POLLO LOCO</h1>
 
-        <div id="fullScreen" class="fullscreen">
-            <canvas id="canvas" width="720px" height="480px"></canvas>
+                <div id="fullScreen" class="fullscreen">
+                    <canvas id="canvas" width="720px" height="480px"></canvas>
+                        <div class="ui_fixed">
+                            <button id="startButton">Start</button>
+                            <button id="restartButton">Restart</button>
+                            <button id="infoButton">Info</button>
 
-            <button id="startButton">Start</button>
-            <button id="restartButton">Restart</button>
-            <button id="infoButton">Info</button>
-        </div>
-        
-        <section class="controls">
-
-                <div class="soundbar">
-                        <img onclick="mute()" src="./assets/icons/sound_on.png" alt="">
-                    <div class="sound_slider">
-                        <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
-                    </div>
+                            <div class="soundbar">
+                                    <img onclick="mute()" src="./assets/icons/sound_on.png" alt="">
+                                <div class="sound_slider">
+                                    <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
+                                </div>
+                            </div>
+                        </div>
+                    
                 </div>
+                <section class="controls">
+                        <div class="keys">
+                            <span>left / right = a/d,</span>
+                            <span>jump = w,</span>
+                            <span>throw bottle = space</span>
+                        </div>
+                </section>
 
-                <div class="keys">
-                    <span>left / right = a/d,</span>
-                    <span>jump = w,</span>
-                    <span>throw bottle = space</span>
+            </div>
+        </main>
+        <footer>
+            <div class="footer">
+            <div class="footer_content">
+                <div class="footer_img">
+                <!-- <a href="#start">
+                    <img src="../assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png" alt="logo" />
+                </a> -->
                 </div>
-            
-        </section>
-
-    </div>
-    <footer>
-        <div class="footer">
-          <div class="footer_content">
-            <div class="footer_img">
-              <!-- <a href="#start">
-                <img src="../assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png" alt="logo" />
-              </a> -->
+                <div class="footer_txt">
+                <div>
+                    <span> &copy; created by Falko 2025</span>
+                </div>
+                <div>
+                    <span>Impressum</span>
+                </div>
+                <div>
+                    <a href="https://github.com/hcplayer1988">my Github</a>
+                </div>
+                </div>
             </div>
-            <div class="footer_txt">
-              <div>
-                <span> &copy; created by Falko 2025</span>
-              </div>
-              <div>
-                <span>Impressum</span>
-              </div>
-              <div>
-                <a href="https://github.com/hcplayer1988">my Github</a>
-              </div>
             </div>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
 </body>
 </html>
