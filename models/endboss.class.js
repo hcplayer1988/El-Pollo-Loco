@@ -72,8 +72,8 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-    this.startMovementLoop();
-    this.startAnimationLoop();
+        this.startMovementLoop();
+        this.startAnimationLoop();
     }
 
     startMovementLoop() {
@@ -109,9 +109,9 @@ class Endboss extends MovableObject {
     }
 
     updateState() {
-    if (this.handleDeath()) return;
-    if (this.handleAlertPhase()) return;
-    this.handleCombatState();
+        if (this.handleDeath()) return;
+        if (this.handleAlertPhase()) return;
+        this.handleCombatState();
     }
 
     handleDeath() {
@@ -161,6 +161,9 @@ class Endboss extends MovableObject {
         this.currentImages = this.images_dead;
         setTimeout(() => {
             this.markedForDeletion = true;
+            if (this.world) {
+                this.world.gameWon = true;
+            }
         }, 1500);
     }
 

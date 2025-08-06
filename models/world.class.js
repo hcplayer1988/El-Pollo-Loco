@@ -12,17 +12,22 @@ class World {
     endbossBar = new Endbossbar();    
     throwableObjects = [];
     startImage = new Image();
+    youWinImage = new Image();
     bottlesCollected = 0;
     throw_bottle_sound = new Audio('audio/throw_bottle.mp3');
     collect_coin_sound = new Audio('audio/collect_coin.mp3');
     collect_bottle_sound = new Audio('audio/collect_bottle.mp3');
     background_sound = new Audio('audio/wildwest-soundtrack-acoustic-guitar-69109.mp3');
+    winSound = new Audio('audio/game_won.mp3');
+    gameWonPlayed = false;
+    gameWon = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.startImage.src = './assets/img/ingame_imgs/9.intro_outro_screens/start.screen/startscreen.1.png'
+        this.youWinImage.src = 'assets/img/ingame_imgs/You won, you lost/you_win_a.png'
         this.setWorld();
         this.run();
         this.startImage.onload = () => {
@@ -38,6 +43,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkRestart();
         }, 1000 / 60); 
     }
 
@@ -107,6 +113,7 @@ class World {
                 this.endbossBar.setPercentage(enemy.energy);
                 if (enemy.energy <= 0) {
                     enemy.die();
+                    //this.gameWon = true;
                 }
             }
         }
@@ -172,8 +179,28 @@ class World {
         let before = this.level.enemies.length;
         this.level.enemies = this.level.enemies.filter(e => !e.markedForDeletion);
         let after = this.level.enemies.length;
-
         if (before !== after) {
+        }
+        //this.level.enemies = this.level.enemies.filter(e => !e.markedForDeletion || e instanceof Endboss);
+    }
+
+    restartGame() {
+        this.gameWon = false;
+        this.gameWonPlayed = false;
+        this.bottlesCollected = 0;
+        this.throwableObjects = [];
+        this.character = new Character();
+        this.healthBar.setPercentage(100);
+        this.coinBar.setPercentage(0);
+        this.bottleBar.setPercentage(0);
+        this.endbossBar.setPercentage(100);
+        this.level = level1;
+        this.setWorld();
+    }
+
+    checkRestart() {
+        if (this.gameWon && this.keyboard.ENTER) {
+            this.restartGame();
         }
     }
 
@@ -189,6 +216,10 @@ class World {
             this.drawStartScreen();
             return requestAnimationFrame(() => this.draw());
         }
+        if (this.gameWon) {
+            this.drawWinScreen();
+            return;
+        }
         this.ctx.translate(this.camera_x, 0);
         this.drawBackground();
         this.drawMovableObjects();
@@ -197,6 +228,15 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         this.drawBars();
         requestAnimationFrame(() => this.draw());
+    }
+
+    drawWinScreen() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.youWinImage, 0, 0, this.canvas.width, this.canvas.height);
+        if (!this.gameWonPlayed) {
+            this.winSound.play();
+            this.gameWonPlayed = true;
+        }
     }
 
     drawBackground() {
