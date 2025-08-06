@@ -15,6 +15,7 @@ function handleGameStart(button) {
         world.gameStarted = true;
         initLevel();
         world.level = level1;
+        world.character.animate();
         world.background_sound.loop = true;
         world.background_sound.play();
         world.character.lastActionTime = Date.now();

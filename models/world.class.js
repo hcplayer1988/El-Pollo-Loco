@@ -57,30 +57,6 @@ class World {
         this.isPaused = false;
     }
 
-    stopGame() {
-        this.gameStopped = true;
-        if (this.background_sound) {
-            this.background_sound.pause();
-            this.background_sound.currentTime = 0;
-        }
-        if (this.intervalId) {
-            clearInterval(this.intervalId); //Hier wird das Game-Loop gestoppt!
-        }
-        if (this.animationId) {
-            cancelAnimationFrame(this.animationId); // Falls du das verwendet hast
-        }
-        window.removeEventListener("keydown", this.keydownHandler);
-        window.removeEventListener("keyup", this.keyupHandler);
-        cancelAnimationFrame(this.animationId);
-    }
-
-    stopAnimation() {
-        if (this.animationId) {
-            cancelAnimationFrame(this.animationId);
-            this.animationId = null;
-        }
-    }
-
     checkGameEndConditions() {
         if (this.gameStarted && this.character.isDead()) {
             this.drawGameOverScreen();

@@ -83,7 +83,7 @@ class Character extends MovableObject {
         this.loadImages(this.images_idle);
         this.loadImages(this.images_idle_long);
         this.applyGravity();
-        this.animate();
+        //this.animate();
         this.idleLongPlayed = false;
         this.idleLongStartTime = null;
     }
