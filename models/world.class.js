@@ -102,7 +102,6 @@ class World {
         }, 1000 / 60);
     }
 
-
     checkThrowObjects() {
         if (!this.level || !this.gameStarted) return;
         let canThrow = this.keyboard.space_shoot &&

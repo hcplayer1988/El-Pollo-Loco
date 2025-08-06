@@ -39,7 +39,7 @@ body a {
 #startButton {
     position: absolute;
     top: 8%;
-    left: 50%;
+    left: 52%;
     transform: translateX(-50%);
     padding-left: 4px;
     padding-right: 4px;
@@ -49,6 +49,31 @@ body a {
     width: 90px;
 }
 
+#restartButton {
+    position: absolute;
+    top: 8%;
+    left: 42%;
+    transform: translateX(-50%);
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    width: 90px;
+}
+
+#infoButton {
+    position: absolute;
+    top: 11%;
+    left: 42%;
+    transform: translateX(-50%);
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    width: 90px;
+}
 
 canvas {
     background-color: rgb(0, 0, 0);
@@ -79,6 +104,10 @@ canvas {
 }
 
 .soundbar img{
+    position: absolute;
+    top: 41.75%;
+    left: 72%;
+    z-index: 10;
     height: 28px;
     width: 28px;
     cursor: pointer;
@@ -87,6 +116,10 @@ canvas {
 }
 
 .soundbar input {
+    position: absolute;
+    top: 42%;
+    left: 75%;
+    z-index: 10;
     width: 80px;
     cursor: pointer;
 }
