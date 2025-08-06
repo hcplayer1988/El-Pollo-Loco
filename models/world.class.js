@@ -26,6 +26,10 @@ class World {
     gameOver = false;
     gameOverPlayed = false;
     gameStopped = false;
+    intervalId;
+    animationId;
+    isPaused = false;
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -45,12 +49,36 @@ class World {
         this.character.world = this;
     }
 
+    pauseGame() {
+        this.isPaused = true;
+    }
+
+    resumeGame() {
+        this.isPaused = false;
+    }
+
     stopGame() {
         this.gameStopped = true;
-        this.background_sound.pause();
-        this.background_sound.currentTime = 0;
+        if (this.background_sound) {
+            this.background_sound.pause();
+            this.background_sound.currentTime = 0;
+        }
+        if (this.intervalId) {
+            clearInterval(this.intervalId); //Hier wird das Game-Loop gestoppt!
+        }
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId); // Falls du das verwendet hast
+        }
         window.removeEventListener("keydown", this.keydownHandler);
         window.removeEventListener("keyup", this.keyupHandler);
+        cancelAnimationFrame(this.animationId);
+    }
+
+    stopAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
     }
 
     checkGameEndConditions() {
@@ -68,12 +96,12 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        this.intervalId = setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-            this.checkRestart();
-        }, 1000 / 60); 
+        }, 1000 / 60);
     }
+
 
     checkThrowObjects() {
         if (!this.level || !this.gameStarted) return;
@@ -141,7 +169,6 @@ class World {
                 this.endbossBar.setPercentage(enemy.energy);
                 if (enemy.energy <= 0) {
                     enemy.die();
-                    //this.gameWon = true;
                 }
             }
         }
@@ -211,41 +238,19 @@ class World {
         }
     }
 
-    restartGame() {
-        this.gameWon = false;
-        this.gameWonPlayed = false;
-        this.bottlesCollected = 0;
-        this.throwableObjects = [];
-        this.character = new Character();
-        this.healthBar.setPercentage(100);
-        this.coinBar.setPercentage(0);
-        this.bottleBar.setPercentage(0);
-        this.endbossBar.setPercentage(100);
-        this.level = level1;
-        this.setWorld();
-    }
-
-    checkRestart() {
-        if (this.gameWon && this.keyboard.ENTER) {
-            this.restartGame();
-        }
-    }
-
     drawStartScreen() {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.fillStyle = 'black';
-        this.ctx.fillText('click to start', this.canvas.width / 2, this.canvas.height - 50);
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        if (!this.gameStarted) {
+        if (!this.gameStarted || this.gameStopped) {
             this.drawStartScreen();
-            return requestAnimationFrame(() => this.draw());
+            return; // Abbruch des Loops
         }
         if (this.checkGameEndConditions()) return;
         this.drawWorldObjects();
-        requestAnimationFrame(() => this.draw());
+        this.animationId = requestAnimationFrame(() => this.draw());
     }
 
     drawWorldObjects() {
@@ -335,4 +340,3 @@ class World {
         this.ctx.restore();
     }
 }
-
