@@ -26,11 +26,6 @@ function handleGameStart(button) {
     }
 }
 
-// function setupStartButton() {
-//     let startButton = document.getElementById('startButton');
-//     startButton.style.display = 'block';
-//     startButton.onclick = () => handleGameStart(startButton);
-// }
 function setupStartButton() {
     let startButton = document.getElementById('startButton');
 

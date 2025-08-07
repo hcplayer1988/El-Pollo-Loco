@@ -36,32 +36,24 @@
 </head>
 <body onload="init()">
     <div class="page_wrapper">
-        <main class="content">
-            <div class="background">
+        
+            <header class="page_header">
                 <h1>EL POLLO LOCO</h1>
+            </header>
 
+            <main class="content">
                 <div id="fullScreen" class="fullscreen">
-                    <canvas id="canvas" width="720px" height="480px"></canvas>
-                        <div class="HUD">
-                            <div id="infoOverlay" class="info-overlay hidden">
-                                <div class="info-content">
-                                    <h2>Game instructions</h2>
-                                    <p>Move with it <strong>A</strong> to the left and with <strong>D</strong> to the right</p>
-                                    <p>Jump with <strong>W</strong></p>
-                                    <p>Throw salsa bottles with <strong>Space</strong></p>
-                                    <p>Defeat the chickens by jumping on them or throwing salsa bottles at them! <br>
-                                       Be careful, you only have a limited number of salsa bottles and you still need enough for the final boss!</p>
-                                    <p>Defeat the final boss to win by throwing salsa bottles at him!</p>
-                                    <button id="closeInfoButton">X</button>
-                                </div>
-                            </div>
+                    <div class="HUD">
+                        
 
-                            <div class="ui_fixed">
+                        <div class="ui_fixed">
+                            <div class="buttons">
                                 <button id="startButton">Start</button>
                                 <button id="restartButton">Restart</button>
                                 <button id="infoButton">Info</button>
-                                <button id="pauseButton">⏸️▶️
-</button>
+                            </div>
+                            <div class="game_controls">
+                                <button id="pauseButton">⏸️▶️</button>
                                 <img class="full_screen" onclick="fullscreen()" src="./assets/icons/fullScreen.png" alt="fullscreen">
                                 <div class="soundbar">
                                         <img onclick="mute()" src="./assets/icons/sound_on.png" alt="mute">
@@ -71,40 +63,54 @@
                                 </div>
                             </div>
                         </div>
-                    
-                </div>
-                <section class="controls">
+                    </div>
+                    <div id="infoOverlay" class="info-overlay hidden">
+                            <div class="info-content">
+                                <h2>Game instructions</h2>
+                                <p>Move with it <strong>A</strong> to the left and with <strong>D</strong> to the right</p>
+                                <p>Jump with <strong>W</strong></p>
+                                <p>Throw salsa bottles with <strong>Space</strong></p>
+                                <p>Defeat the chickens by jumping on them or throwing salsa bottles at them! <br>
+                                   Be careful, you only have a limited number of salsa bottles and you still need enough for the final boss!</p>
+                                <p>Defeat the final boss to win by throwing salsa bottles at him!</p>
+                                <button id="closeInfoButton">X</button>
+                            </div>
+                        </div>
+                    <canvas id="canvas" width="720px" height="480px"></canvas>
+            
+
+                    <section class="controls">
                         <div class="keys">
                             <span>left / right = a/d,</span>
                             <span>jump = w,</span>
                             <span>throw bottle = space</span>
                         </div>
-                </section>
+                    </section>
+                </div>
+            </main>
 
-            </div>
-        </main>
-        <footer>
-            <div class="footer">
-            <div class="footer_content">
-                <div class="footer_img">
-                <!-- <a href="#start">
-                    <img src="../assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png" alt="logo" />
-                </a> -->
+            <footer>
+                <div class="footer">
+                <div class="footer_content">
+                    <div class="footer_img">
+                    <!-- <a href="#start">
+                        <img src="../assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png" alt="logo" />
+                    </a> -->
+                    </div>
+                    <div class="footer_txt">
+                    <div>
+                        <span> &copy; created by Falko 2025</span>
+                    </div>
+                    <div>
+                        <span>Impressum</span>
+                    </div>
+                    <div>
+                        <a href="https://github.com/hcplayer1988">my Github</a>
+                    </div>
+                    </div>
                 </div>
-                <div class="footer_txt">
-                <div>
-                    <span> &copy; created by Falko 2025</span>
                 </div>
-                <div>
-                    <span>Impressum</span>
-                </div>
-                <div>
-                    <a href="https://github.com/hcplayer1988">my Github</a>
-                </div>
-                </div>
-            </div>
-            </div>
-        </footer>
-      </div>
+            </footer>
+    </div>
 </body>
 </html>

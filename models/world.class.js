@@ -50,15 +50,6 @@ class World {
         this.character.world = this;
     }
 
-    // pauseGame() {
-    //     this.gameStopped = true;
-    //     this.background_sound.pause();
-    // }
-
-    // resumeGame() {
-    //     this.gameStopped = false;
-    //     if (this.background_sound) this.background_sound.play();
-    // }
     togglePause() {
         this.gameStopped = !this.gameStopped;
         if (this.gameStopped) {
@@ -268,16 +259,6 @@ class World {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
     }
 
-    // draw() {
-    //     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //     if (!this.gameStarted || this.gameStopped) {
-    //         this.drawStartScreen();
-    //         return; // Abbruch des Loops
-    //     }
-    //     if (this.checkGameEndConditions()) return;
-    //     this.drawWorldObjects();
-    //     this.animationId = requestAnimationFrame(() => this.draw());
-    // }
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (!this.gameStarted) {

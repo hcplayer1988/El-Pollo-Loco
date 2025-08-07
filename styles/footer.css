@@ -1,9 +1,12 @@
-.footer {
+
+footer {
     background-color: #9e2132;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .footer a {
