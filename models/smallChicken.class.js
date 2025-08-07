@@ -25,13 +25,16 @@ class SmallChicken extends MovableObject {
         'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/2_dead/dead.png'
     ];
         
-
     constructor() {
         super().loadImage('assets/img/ingame_imgs/3.enemies.chicken/chicken_normal/1_walk/1_w.png')
         this.loadImages(this.images_walking);
         this.x = 650 + Math.random() * 900; 
         this.speed = 0.1 + Math.random() * 0.4; 
         this.animate();
+        this.defaultX = this.x;
+        this.defaultY = this.y;
+        this.defaultSpeed = this.speed;
+
     }
 
     animate() {
@@ -61,7 +64,6 @@ class SmallChicken extends MovableObject {
             character.speedY < 0;
         return horizontalOverlap && verticalHit;
     }
-
 
     die() {
         this.dead = true;

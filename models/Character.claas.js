@@ -73,6 +73,8 @@ class Character extends MovableObject {
         right: 10,
         bottom: 6
     };
+    characterIntervals = [];
+
 
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png')
@@ -83,25 +85,33 @@ class Character extends MovableObject {
         this.loadImages(this.images_idle);
         this.loadImages(this.images_idle_long);
         this.applyGravity();
-        //this.animate();
         this.idleLongPlayed = false;
         this.idleLongStartTime = null;
+        
+        this.defaultX = this.x;
+        this.defaultY = this.y;
+        this.defaultSpeed = this.speed;
     }
 
     animate() {
-        setInterval(() => {
+        this.characterIntervals.push(setInterval(() => {
             this.handleMovement();
             this.updateCamera();
             this.resetIdleTimerIfActive();
-        }, 1000 / 60);
+        }, 1000 / 60));
 
-        setInterval(() => {
+        this.characterIntervals.push(setInterval(() => {
             this.handleHurtOrDeathAnimation() || this.handleMovementAnimation();
-        }, 1000 / 25);
+        }, 1000 / 25));
 
-        setInterval(() => {
+        this.characterIntervals.push(setInterval(() => {
             this.handleIdleAnimation();
-        }, 1000 / 10);
+        }, 1000 / 10));
+    }
+
+    stopAnimation() {
+        this.characterIntervals.forEach(clearInterval);
+        this.characterIntervals = [];
     }
 
     handleMovement() {
@@ -158,6 +168,16 @@ class Character extends MovableObject {
         this.handleHurtOrDeathAnimation() ||
         this.handleMovementAnimation() ||
         this.handleIdleAnimation();
+            if (!this.world || !this.world.gameStarted || this.world.gameStopped) {
+            return;
+        }
+    }
+
+    stopAllSounds() {
+        this.walking_sound.pause();
+        this.jump_sound.pause();
+        this.snoring_sound.pause();
+        this.hit_sound.pause();
     }
 
     handleHurtOrDeathAnimation() {
@@ -191,7 +211,7 @@ class Character extends MovableObject {
         }
         let now = Date.now();
         let inactiveTime = now - this.lastActionTime;
-        if (inactiveTime > 13000 || this.idleLongPlayed) {
+        if (inactiveTime > 10000 || this.idleLongPlayed) {
             this.snoring_sound.loop = true;
             this.snoring_sound.play();
             this.playAnimation(this.images_idle_long);

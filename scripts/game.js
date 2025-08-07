@@ -20,7 +20,7 @@ function handleGameStart(button) {
         world.background_sound.play();
         world.character.lastActionTime = Date.now();
         button.style.display = 'none';
-        world.draw(); // ⏱️ Starte die Animationsschleife neu!
+        world.draw(); // Starte die Animationsschleife neu!
     }
 }
 
@@ -39,28 +39,31 @@ function setupCanvas() {
     canvas = document.getElementById('canvas');
 }
 
-function restartGame() {
-    location.reload(); // So wird wirklich alles zurückgesetzt!
+function resetGame() {
+    stopCurrentGame();       // Stoppt alles
+    resetKeyboard();         // Setzt Eingaben zurück
+    createWorld();           // Neue Welt erzeugen
+    initLevel()              // Level neu laden
+    world.resetAllObjects(); // Alle Objekte zurücksetzen
+    setupStartButton();      // Startbutton anzeigen
 }
 
 function setupRestartButton() {
     let restartButton = document.getElementById('restartButton');
     restartButton.onclick = () => {
-        restartGame();
+        resetGame();
     };
 }
 
 function stopCurrentGame() {
-    if (world?.background_sound) {
-        world.background_sound.pause();
-        world.background_sound.currentTime = 0;
+    if (world?.stopGame) {
+        world.stopGame(); // Nutzt deine modulare Methode!
     }
-    if (world?.stopAnimation) {
-        world.stopAnimation(); // Falls du eine eigene Funktion zum Stoppen der Loop hast
-    }
+
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    world = null; // Welt-Referenz löschen
+
+    world = null;
 }
 
 function resetKeyboard() {

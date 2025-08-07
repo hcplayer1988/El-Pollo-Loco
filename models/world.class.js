@@ -30,7 +30,6 @@ class World {
     animationId;
     isPaused = false;
 
-
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -57,15 +56,59 @@ class World {
         this.isPaused = false;
     }
 
+    stopGame() {
+        this.gameStopped = true;
+        this.stopBackgroundSound();
+        this.stopCharacter();
+        this.stopWorld();
+        this.removeEventListeners();
+    }
+
+    stopBackgroundSound() {
+        if (this.background_sound) {
+            this.background_sound.pause();
+            this.background_sound.currentTime = 0;
+        }
+    }
+
+    stopCharacter() {
+        if (this.character?.stopAllSounds) this.character.stopAllSounds();
+        if (this.character?.stopAnimation) this.character.stopAnimation();
+    }
+
+    stopWorld() {
+        if (this.intervalId) clearInterval(this.intervalId);
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+    }
+
+    removeEventListeners() {
+        window.removeEventListener("keydown", this.keydownHandler);
+        window.removeEventListener("keyup", this.keyupHandler);
+    }
+
+
+    removeEventListeners() {
+        window.removeEventListener("keydown", this.keydownHandler);
+        window.removeEventListener("keyup", this.keyupHandler);
+    }
+
+    resetAllObjects() {
+        if (this.character?.reset) this.character.reset();
+        if (this.enemies) this.enemies.forEach(e => e.reset?.());
+        if (this.clouds) this.clouds.forEach(c => c.reset?.());
+        if (this.coins) this.coins.forEach(c => c.reset?.());
+        if (this.bottles) this.bottles.forEach(b => b.reset?.());
+    }
+
     checkGameEndConditions() {
         if (this.gameStarted && this.character.isDead()) {
             this.drawGameOverScreen();
-            //this.stopGame();
+            this.stopGame();
             return true;
         }
         if (this.gameWon) {
             this.drawWinScreen();
-            //this.stopGame();
+            this.stopGame();
             return true;
         }
         return false;

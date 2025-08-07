@@ -1,9 +1,46 @@
-
-@media screen and (max-width: 800px) {
+@media only screen and (max-width: 720px) {
     canvas {
+        width: 100%;
+    }
+    
+    h1 {
+        display: none;
+    }
+
+    .controls {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+    height: 100vh;
+    }
+    
+    h1 {
+        display: none;
+    }
+
+    .controls {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }
+}
+
+
+
+@media (max-width: 800px) {
+    /* canvas {
         width: 620px;
         height: 380px;
-    }
+    } */
     
     .ui-fixed {
         flex-direction: column;
@@ -17,12 +54,12 @@
 }
 
 
-@media screen and (max-width: 680px) {
-    canvas {
+@media (max-width: 680px) {
+    /* canvas {
         width: 520px;
         height: 300px;
     }
-    
+     */
     .ui-fixed {
         flex-direction: column;
     }

@@ -69,6 +69,9 @@ class Endboss extends MovableObject {
         this.world = world;
         this.character = world.character;
         this.animate();
+        this.defaultX = this.x;
+        this.defaultY = this.y;
+        this.defaultSpeed = this.speed;
     }
 
     animate() {
@@ -166,6 +169,5 @@ class Endboss extends MovableObject {
             }
         }, 1500);
     }
-
 }
 

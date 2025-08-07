@@ -74,4 +74,18 @@ class MovableObject extends DrawableObject {
     jump() {
         this.speedY = 30;
     }
+
+    reset() {
+        this.x = this.defaultX ?? 0;
+        this.y = this.defaultY ?? 0;
+        this.speed = this.defaultSpeed ?? 0;
+        this.otherDirection = false;
+        this.hurtAnimationTriggered = false;
+        this.lastActionTime = Date.now();
+        if (this.stopAllSounds) this.stopAllSounds();
+        if (this.stopAnimation) this.stopAnimation();
+        if (this.resetAnimation) this.resetAnimation();
+    }
 }
+
+
