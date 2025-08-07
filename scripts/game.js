@@ -8,6 +8,8 @@ function init() {
     createWorld();
     setupStartButton();
     setupRestartButton();
+    setupInfoButton(); // open the game description
+    setupPauseButton();
 }
 
 function handleGameStart(button) {
@@ -24,12 +26,23 @@ function handleGameStart(button) {
     }
 }
 
+// function setupStartButton() {
+//     let startButton = document.getElementById('startButton');
+//     startButton.style.display = 'block';
+//     startButton.onclick = () => handleGameStart(startButton);
+// }
 function setupStartButton() {
     let startButton = document.getElementById('startButton');
-    startButton.style.display = 'block';
 
-    startButton.onclick = () => handleGameStart(startButton);
+    // Nur anzeigen, wenn das Spiel noch nicht gestartet wurde
+    if (!world?.gameStarted) {
+        startButton.style.display = 'block';
+        startButton.onclick = () => handleGameStart(startButton);
+    } else {
+        startButton.style.display = 'none';
+    }
 }
+
 
 function createWorld() {
     world = new World(canvas, keyboard);
@@ -72,6 +85,39 @@ function resetKeyboard() {
     keyboard.w_jump = false;
     keyboard.s_down = false;
     keyboard.space_shoot = false;
+}
+
+function setupInfoButton() {
+    let infoButton = document.getElementById('infoButton');
+    let overlay = document.getElementById('infoOverlay');
+    let closeButton = document.getElementById('closeInfoButton');
+
+    infoButton.onclick = () => {
+        if (world?.gameStarted) {
+            world.togglePause(); // Einheitliche Pausenlogik
+            overlay.classList.remove('hidden');
+        }
+    };
+
+    closeButton.onclick = () => {
+        overlay.classList.add('hidden');
+        if (world?.gameStarted) {
+            setTimeout(() => {
+                world.togglePause(); // Spiel fortsetzen
+            }, 1000);
+        }
+    };
+}
+
+function setupPauseButton() {
+    let pauseButton = document.getElementById('pauseButton');
+    pauseButton.innerText = '⏸️'; // Initiales Symbol
+    pauseButton.onclick = () => {
+        if (world?.gameStarted) {
+            world.togglePause();
+            pauseButton.innerText = world.gameStopped ? '▶️' : '⏸️';
+        }
+    };
 }
 
 // der trigger für die Pfeiltasten funktionierrt nur mit "keydown"!!! Das funktioniert aber auch mit allen anderen Tasten!!

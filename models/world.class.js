@@ -29,6 +29,8 @@ class World {
     intervalId;
     animationId;
     isPaused = false;
+    isInfoPaused = false;
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -48,12 +50,24 @@ class World {
         this.character.world = this;
     }
 
-    pauseGame() {
-        this.isPaused = true;
-    }
+    // pauseGame() {
+    //     this.gameStopped = true;
+    //     this.background_sound.pause();
+    // }
 
-    resumeGame() {
-        this.isPaused = false;
+    // resumeGame() {
+    //     this.gameStopped = false;
+    //     if (this.background_sound) this.background_sound.play();
+    // }
+    togglePause() {
+        this.gameStopped = !this.gameStopped;
+        if (this.gameStopped) {
+            this.background_sound.pause();
+            if (this.animationId) cancelAnimationFrame(this.animationId);
+        } else {
+            this.background_sound.play();
+            this.draw(); // Neustart des Loops
+        }
     }
 
     stopGame() {
@@ -80,12 +94,6 @@ class World {
         if (this.intervalId) clearInterval(this.intervalId);
         if (this.animationId) cancelAnimationFrame(this.animationId);
     }
-
-    removeEventListeners() {
-        window.removeEventListener("keydown", this.keydownHandler);
-        window.removeEventListener("keyup", this.keyupHandler);
-    }
-
 
     removeEventListeners() {
         window.removeEventListener("keydown", this.keydownHandler);
@@ -260,13 +268,24 @@ class World {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
     }
 
+    // draw() {
+    //     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    //     if (!this.gameStarted || this.gameStopped) {
+    //         this.drawStartScreen();
+    //         return; // Abbruch des Loops
+    //     }
+    //     if (this.checkGameEndConditions()) return;
+    //     this.drawWorldObjects();
+    //     this.animationId = requestAnimationFrame(() => this.draw());
+    // }
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        if (!this.gameStarted || this.gameStopped) {
+        if (!this.gameStarted) {
             this.drawStartScreen();
-            return; // Abbruch des Loops
+            return;
         }
         if (this.checkGameEndConditions()) return;
+        if (this.gameStopped) return; // Kein Startscreen mehr bei Pause!
         this.drawWorldObjects();
         this.animationId = requestAnimationFrame(() => this.draw());
     }

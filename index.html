@@ -42,15 +42,32 @@
 
                 <div id="fullScreen" class="fullscreen">
                     <canvas id="canvas" width="720px" height="480px"></canvas>
-                        <div class="ui_fixed">
-                            <button id="startButton">Start</button>
-                            <button id="restartButton">Restart</button>
-                            <button id="infoButton">Info</button>
+                        <div class="HUD">
+                            <div id="infoOverlay" class="info-overlay hidden">
+                                <div class="info-content">
+                                    <h2>Game instructions</h2>
+                                    <p>Move with it <strong>A</strong> to the left and with <strong>D</strong> to the right</p>
+                                    <p>Jump with <strong>W</strong></p>
+                                    <p>Throw salsa bottles with <strong>Space</strong></p>
+                                    <p>Defeat the chickens by jumping on them or throwing salsa bottles at them! <br>
+                                       Be careful, you only have a limited number of salsa bottles and you still need enough for the final boss!</p>
+                                    <p>Defeat the final boss to win by throwing salsa bottles at him!</p>
+                                    <button id="closeInfoButton">X</button>
+                                </div>
+                            </div>
 
-                            <div class="soundbar">
-                                    <img onclick="mute()" src="./assets/icons/sound_on.png" alt="">
-                                <div class="sound_slider">
-                                    <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
+                            <div class="ui_fixed">
+                                <button id="startButton">Start</button>
+                                <button id="restartButton">Restart</button>
+                                <button id="infoButton">Info</button>
+                                <button id="pauseButton">⏸️▶️
+</button>
+                                <img class="full_screen" onclick="fullscreen()" src="./assets/icons/fullScreen.png" alt="fullscreen">
+                                <div class="soundbar">
+                                        <img onclick="mute()" src="./assets/icons/sound_on.png" alt="mute">
+                                    <div class="sound_slider">
+                                        <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
