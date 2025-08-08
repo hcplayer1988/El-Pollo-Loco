@@ -84,6 +84,5 @@ class SmallChicken extends MovableObject {
                 chicken.die();
             }
         }
-    }
-    
+    } 
 }

@@ -26,7 +26,6 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-
         if(this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle){
             // ctx.beginPath();
             // ctx.lineWidth = '0';
@@ -43,7 +42,6 @@ class DrawableObject {
             let y = this.y + this.offset.top;
             let width = this.width - this.offset.left - this.offset.right;
             let height = this.height - this.offset.top - this.offset.bottom;
-
             // ctx.beginPath();
             // ctx.lineWidth = '1';
             // ctx.strokeStyle = 'green';
@@ -60,5 +58,4 @@ class DrawableObject {
             this.imageCache[path] = img;
         });
     }
-
 }

@@ -41,6 +41,10 @@ body a {
     text-decoration: none;
 }
 
+.mobile_instruktion {
+    display: none;
+}
+
 .HUD {
     position: absolute;
     top: 0;
@@ -165,6 +169,12 @@ canvas {
     gap: 8px;
     width: 100%;
     padding-bottom: 8px;
+}
+
+.move_buttons_direction {
+    display: flex;
+    gap: 40px;
+    margin-right: 20px;
 }
 
 .move_buttons_direction button {

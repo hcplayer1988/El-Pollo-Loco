@@ -1,5 +1,15 @@
+@media (max-width: 1024px) {
+    .controls {
+        display: none;
+    }
+}
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 770px) {
+    .mobile_instruktion {
+        display: block;
+        padding-top: 200px;
+    }
+    
     canvas {
         width: 100vw;
         height: auto;
@@ -84,6 +94,10 @@
     #pauseButton {
         width: 20px;
         height: 20px 
+    }
+
+    .move_buttons_direction {
+        gap: 60px;
     }
 }
 
