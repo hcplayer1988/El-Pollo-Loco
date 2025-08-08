@@ -87,10 +87,13 @@ class Character extends MovableObject {
         this.applyGravity();
         this.idleLongPlayed = false;
         this.idleLongStartTime = null;
-        
         this.defaultX = this.x;
         this.defaultY = this.y;
         this.defaultSpeed = this.speed;
+        soundhub.addSound(this.walking_sound);
+        soundhub.addSound(this.jump_sound);
+        soundhub.addSound(this.snoring_sound);
+        soundhub.addSound(this.hit_sound);
     }
 
     animate() {

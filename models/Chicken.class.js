@@ -32,6 +32,7 @@ class Chicken extends MovableObject {
         this.defaultX = this.x;
         this.defaultY = this.y;
         this.defaultSpeed = this.speed;
+        soundhub.addSound(this.dead_sound);
     }
 
    animate() {

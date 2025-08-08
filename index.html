@@ -30,6 +30,7 @@
     <script src="./models/throwable-object.class.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./models/world.class.js"></script>
+    <script src="./models/soundhub.claas.js"></script>
     <script src="./scripts/game.js"></script>
 
     <link rel="shortcut icon" href="assets\img\ingame_imgs\2.character.pepe\1.idle\idle\I-4.png" type="image/x-icon">
@@ -56,9 +57,9 @@
                                 <button id="pauseButton">⏸️▶️</button>
                                 <img class="full_screen" onclick="fullscreen()" src="./assets/icons/fullScreen.png" alt="fullscreen">
                                 <div class="soundbar">
-                                        <img onclick="mute()" src="./assets/icons/sound_on.png" alt="mute">
+                                        <img id="soundToggleIcon" src="./assets/icons/sound_on.png" alt="sound toggle">
                                     <div class="sound_slider">
-                                        <input type="range" oninput="soundhub.objSetVolume" id="volume" min=0 max=1 step=0.01 value=0.2>
+                                        <input type="range" oninput="soundhub.setVolume(this.value)" id="volume" min="0" max="1" step="0.01" value="0.2">
                                     </div>
                                 </div>
                             </div>

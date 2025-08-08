@@ -10,6 +10,8 @@ function init() {
     setupRestartButton();
     setupInfoButton(); // open the game description
     setupPauseButton();
+    setupSoundToggle();
+    soundhub.updateSoundToggleIcon();;
 }
 
 function handleGameStart(button) {
@@ -115,6 +117,11 @@ function setupPauseButton() {
     };
 }
 
+function setupSoundToggle() {
+    let icon = document.getElementById('soundToggleIcon');
+    icon.addEventListener('click', () => soundhub.toggleMute());
+}
+
 // der trigger für die Pfeiltasten funktionierrt nur mit "keydown"!!! Das funktioniert aber auch mit allen anderen Tasten!!
 // Tastentrigger auf true
 window.addEventListener("keydown", (e) => {
@@ -164,3 +171,6 @@ window.addEventListener("keyup", (a) => {
             keyboard.space_shoot = false;
     } 
 });
+
+window.addEventListener('load', init);
+

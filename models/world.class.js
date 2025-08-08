@@ -44,6 +44,12 @@ class World {
         this.startImage.onload = () => {
             this.draw();
         }
+        soundhub.addSound(this.throw_bottle_sound);
+        soundhub.addSound(this.collect_coin_sound);
+        soundhub.addSound(this.collect_bottle_sound);
+        soundhub.addSound(this.background_sound);
+        soundhub.addSound(this.winSound);
+        soundhub.addSound(this.looseSound);
     }
 
     setWorld() {
