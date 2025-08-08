@@ -50,6 +50,7 @@ class World {
         soundhub.addSound(this.background_sound);
         soundhub.addSound(this.winSound);
         soundhub.addSound(this.looseSound);
+        soundhub.setVolume(soundhub.volume);
     }
 
     setWorld() {

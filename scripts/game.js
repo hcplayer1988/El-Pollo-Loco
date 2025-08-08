@@ -2,6 +2,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let soundToggleInitialized = false;
 
 function init() {
     setupCanvas();
@@ -10,7 +11,7 @@ function init() {
     setupRestartButton();
     setupInfoButton(); // open the game description
     setupPauseButton();
-    setupSoundToggle();
+    //setupSoundToggle();
     soundhub.updateSoundToggleIcon();;
 }
 
@@ -39,7 +40,6 @@ function setupStartButton() {
         startButton.style.display = 'none';
     }
 }
-
 
 function createWorld() {
     world = new World(canvas, keyboard);
@@ -95,7 +95,6 @@ function setupInfoButton() {
             overlay.classList.remove('hidden');
         }
     };
-
     closeButton.onclick = () => {
         overlay.classList.add('hidden');
         if (world?.gameStarted) {
@@ -118,9 +117,19 @@ function setupPauseButton() {
 }
 
 function setupSoundToggle() {
+    if (soundToggleInitialized) return;
+    soundToggleInitialized = true;
+
     let icon = document.getElementById('soundToggleIcon');
-    icon.addEventListener('click', () => soundhub.toggleMute());
+    if (icon) {
+        icon.addEventListener('click', () => {
+            soundhub.toggleMute();
+        });
+    } else {
+        console.warn('soundToggleIcon not found in DOM');
+    }
 }
+
 
 // der trigger für die Pfeiltasten funktionierrt nur mit "keydown"!!! Das funktioniert aber auch mit allen anderen Tasten!!
 // Tastentrigger auf true
@@ -167,10 +176,32 @@ window.addEventListener("keyup", (a) => {
     }
 
         if (a.keyCode == 32) {
-            //e.preventDefault();
             keyboard.space_shoot = false;
     } 
 });
 
-window.addEventListener('load', init);
+window.addEventListener('DOMContentLoaded', () => {
+    // SoundHub erzeugen
+    window.soundhub = new SoundHub(); // global verfügbar machen
+
+    // Lautstärke-Slider verbinden
+    let slider = document.getElementById('volumeSlider');
+    if (slider) {
+        //Initialwert aus SoundHub setzen
+        slider.value = soundhub.volume;
+        slider.addEventListener('input', (e) => {
+            soundhub.setVolume(e.target.value);
+        });
+    }
+    // Mute-Icon verbinden
+    let icon = document.getElementById('soundToggleIcon');
+    if (icon) {
+        icon.addEventListener('click', () => {
+            soundhub.toggleMute();
+        });
+    }
+    // Jetzt Spiel initialisieren
+    init();
+});
+
 
