@@ -11,8 +11,8 @@ function init() {
     setupRestartButton();
     setupInfoButton(); // open the game description
     setupPauseButton();
-    //setupSoundToggle();
-    soundhub.updateSoundToggleIcon();;
+    soundhub.updateSoundToggleIcon();
+    keyboard.bindBtsPresssEvents();
 }
 
 function handleGameStart(button) {
