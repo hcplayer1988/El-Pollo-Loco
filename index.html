@@ -54,14 +54,21 @@
                                 <button id="infoButton">Info</button>
                             </div>
                             <div class="game_controls">
+                                <div class="move_buttons_direction">
+                                    <button><</button>
+                                    <button>></button>
+                                </div>
                                 <button id="pauseButton">⏸️▶️</button>
                                 <img class="full_screen" onclick="fullscreen()" src="./assets/icons/fullScreen.png" alt="fullscreen">
                                 <div class="soundbar">
                                         <img id="soundToggleIcon" src="./assets/icons/sound_on.png" alt="sound toggle">
                                     <div class="sound_slider">
                                         <input type="range" oninput="soundhub.setVolume(this.value)" id="volumeSlider" min="0" max="1" step="0.01" value="0.2">
-
                                     </div>
+                                </div>
+                                <div class="buttons_jump_throw">
+                                    <button>jump</button>
+                                    <button>throw</button>
                                 </div>
                             </div>
                         </div>

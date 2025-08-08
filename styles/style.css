@@ -159,9 +159,17 @@ canvas {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 12px;
+    align-items: center;
+    gap: 8px;
     width: 100%;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
+}
+
+.move_buttons_direction button {
+    width: 20px;
+    height: 24px;
+    padding: 0;
+    font-size: 16px;
 }
 
 .soundbar {
@@ -185,6 +193,18 @@ canvas {
     z-index: 10;
     width: 80px;
     cursor: pointer;
+}
+
+.buttons_jump_throw button {
+    width: 55px;
+    height: 30px;
+    padding: 0;
+    font-size: 16px;
+}
+
+.buttons_jump_throw button img {
+    height: 20px;
+    width: 20px;
 }
 
 .keys {
