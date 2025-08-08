@@ -1,21 +1,22 @@
 
 footer {
-    background-color: #9e2132;
+    background-color: #ff9500;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     flex-grow: 0;
     flex-shrink: 0;
+    color: black !important;
 }
 
 .footer a {
     text-decoration: none;
-    color: #ff9500;
+    color: black;
 }
 
 .footer_content {
-    color: #ff9500;
+    color: black !important;
     display: flex;
     justify-content: space-around;
     align-items: center;

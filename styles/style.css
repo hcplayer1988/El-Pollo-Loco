@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    font-family: 'Mexicana', sans-serif;
+    color: black;
 }
 
 html, body {
@@ -270,4 +272,16 @@ canvas {
 
 .overlay-active .HUD .buttons {
   display: none;
+}
+
+.footer {
+    color: black !important;
+}
+
+@font-face {
+  font-family: 'Mexicana';
+  src: url('../assets/font/mexicana/Mexicana.ttf') format('truetype');
+  src: url('../assets/font/mexicana/MexicanaHollow.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
