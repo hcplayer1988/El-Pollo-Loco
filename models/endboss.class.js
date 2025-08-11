@@ -82,21 +82,25 @@ class Endboss extends MovableObject {
     startMovementLoop() {
         setInterval(() => {
             this.checkAlertTrigger();
-            if (!this.isDead() && !this.alertPhaseActive) {
+            if (!this.isDead() && this.alertTriggered && !this.alertPhaseActive) {
                 this.moveLeft();
             }
         }, 1000 / 100);
     }
 
+
     checkAlertTrigger() {
         if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
             this.alertTriggered = true;
             this.alertPhaseActive = true;
+            this.currentImages = this.images_alert;
             setTimeout(() => {
                 this.alertPhaseActive = false;
-            }, 2000);
+                this.updateState(); // Sofort Zustand aktualisieren
+            }, 1000); // 1 Sekunde Alert-Phase
         }
     }
+
 
     startAnimationLoop() {
         setInterval(() => {
@@ -135,18 +139,17 @@ class Endboss extends MovableObject {
     }
 
     handleCombatState() {
-        let closeToCharacter = this.getDistanceToCharacter() < 100;
-        let weakened = this.energy <= 50;
-        if (closeToCharacter || weakened) {
-            this.attackMode = true;
-            this.speed = 1.1;
+        let closeToCharacter = this.getDistanceToCharacter() < 150;
+        this.attackMode = closeToCharacter;
+        if (this.attackMode) {
             this.currentImages = this.images_attack;
+            this.speed = 1.1;
         } else {
-            this.attackMode = false;
-            this.speed = 0.5;
             this.currentImages = this.images_walking;
+            this.speed = 0.5;
         }
     }
+
 
     hit(damage) {
         this.energy = Math.max(this.energy - damage, 0);
