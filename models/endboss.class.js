@@ -135,7 +135,7 @@ class Endboss extends MovableObject {
     }
 
     handleCombatState() {
-        let closeToCharacter = this.getDistanceToCharacter() < 300;
+        let closeToCharacter = this.getDistanceToCharacter() < 100;
         let weakened = this.energy <= 50;
         if (closeToCharacter || weakened) {
             this.attackMode = true;

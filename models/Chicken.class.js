@@ -66,7 +66,9 @@ class Chicken extends MovableObject {
     die() {
         this.dead = true;
         this.speed = 0;
-        this.dead_sound.play();
+        if (!soundhub.muted) {
+            this.dead_sound.play();
+        }
         this.loadImages(this.images_dead);
         this.img = this.imageCache[this.images_dead[0]];
         setTimeout(() => {

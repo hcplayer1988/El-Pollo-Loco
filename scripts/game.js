@@ -90,7 +90,7 @@ function setupRestartButton() {
 
 function stopCurrentGame() {
     if (world?.stopGame) {
-        world.stopGame(); // Nutzt deine modulare Methode!
+        world.stopGame();
     }
 
     let ctx = canvas.getContext('2d');

@@ -10,6 +10,11 @@
     color: black
 }
 
+.body {
+    height: 100% !important;
+    background-repeat: repeat !important;
+}
+
 .wrapper {
     box-sizing: border-box;
     min-height: 100%;
@@ -35,7 +40,12 @@
     padding-top: 60px;
     padding-left: 160px;
     padding-right: 160px;
+    padding-bottom: 60px;
     font-weight: 900;
+    background-image: url('../assets/img/ingame_imgs/5.background/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .page_body button {

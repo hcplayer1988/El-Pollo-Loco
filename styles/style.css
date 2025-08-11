@@ -178,10 +178,11 @@ canvas {
 }
 
 .move_buttons_direction button {
-    width: 20px;
-    height: 24px;
+    width: 50px;
+    height: 35px;
     padding: 0;
     font-size: 16px;
+    opacity: 0%;
 }
 
 .soundbar {
@@ -190,9 +191,35 @@ canvas {
     gap: 8px;
 }
 
+.soundbar button {
+    height: 32px;
+}
+
+#soundToggleIcon {
+    height: 24px;
+    width: 24px;
+}
+
+#btnFullscreen {
+    height: 24px;
+    width: 24px;
+}
+
+#pauseButton {
+    z-index: 10;
+    height: 30px !important;
+    width: 30px !important;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff9500;
+    padding: 1px;
+    color: whitesmoke;
+}
+
 .soundbar img{
     z-index: 10;
-    height: 28px;
+    height: 32apx;
     width: 28px;
     cursor: pointer;
     border: none;
@@ -207,16 +234,22 @@ canvas {
     cursor: pointer;
 }
 
+.buttons_jump_throw {
+    display: flex;
+    gap: 20px;
+}
+
 .buttons_jump_throw button {
-    width: 55px;
-    height: 30px;
+    width: 72px;
+    height: 35px;
     padding: 0;
     font-size: 16px;
+    opacity: 0%;
 }
 
 .buttons_jump_throw button img {
-    height: 20px;
-    width: 20px;
+    height: 40px;
+    width: 40px;
 }
 
 .keys {
@@ -266,18 +299,6 @@ canvas {
     height: 32px;
     border-radius: 16px;
     box-shadow: 2px 2px 10px #a7a7a7;
-}
-
-#pauseButton {
-    z-index: 10;
-    height: 28px;
-    width: 28px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff9500;
-    padding: 1px;
-    color: whitesmoke;
 }
 
 .overlay-active .HUD .buttons {
