@@ -1,20 +1,33 @@
-
+/** @type {HTMLCanvasElement} */
 let canvas;
+
+/** @type {World} */
 let world;
+
+/** @type {Keyboard} */
 let keyboard = new Keyboard();
+
+/** @type {boolean} */
 let soundToggleInitialized = false;
 
+/**
+ * Initializes the game environment including canvas, world, buttons, and sound settings.
+ */
 function init() {
     setupCanvas();
     createWorld();
     setupStartButton();
     setupRestartButton();
-    setupInfoButton(); // open the game description
+    setupInfoButton();
     setupPauseButton();
     soundhub.updateSoundToggleIcon();
     keyboard.bindBtsPresssEvents();
 }
 
+/**
+ * Handles the game start logic when the start button is clicked.
+ * @param {HTMLButtonElement} button - The start button element
+ */
 function handleGameStart(button) {
     if (!world.gameStarted) {
         world.gameStarted = true;
@@ -27,10 +40,13 @@ function handleGameStart(button) {
         button.style.display = 'none';
         document.getElementById('infoButton').style.display = 'inline-block';
         document.getElementById('restartButton').style.display = 'inline-block';
-        world.draw(); // Starte die Animationsschleife neu!
+        world.draw();
     }
 }
 
+/**
+ * Toggles fullscreen mode on or off.
+ */
 function fullscreen() {
     let fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
     if (fullscreenElement) {
@@ -41,6 +57,10 @@ function fullscreen() {
     }
 }
 
+/**
+ * Requests fullscreen mode for a given element.
+ * @param {HTMLElement} element - The element to display in fullscreen
+ */
 function enterFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -51,6 +71,9 @@ function enterFullscreen(element) {
     }
 }
 
+/**
+ * Exits fullscreen mode.
+ */
 function exitFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -59,9 +82,11 @@ function exitFullscreen() {
     }
 }
 
+/**
+ * Sets up the start button and its click behavior.
+ */
 function setupStartButton() {
     let startButton = document.getElementById('startButton');
-    // Nur anzeigen, wenn das Spiel noch nicht gestartet wurde
     if (!world?.gameStarted) {
         startButton.style.display = 'block';
         startButton.onclick = () => handleGameStart(startButton);
@@ -70,23 +95,35 @@ function setupStartButton() {
     }
 }
 
+/**
+ * Creates a new game world instance.
+ */
 function createWorld() {
     world = new World(canvas, keyboard);
 }
 
+/**
+ * Initializes the canvas element.
+ */
 function setupCanvas() {
     canvas = document.getElementById('canvas');
 }
 
+/**
+ * Resets the game state and restarts the game.
+ */
 function resetGame() {
-    stopCurrentGame();       // Stoppt alles
-    resetKeyboard();         // Setzt Eingaben zurück
-    createWorld();           // Neue Welt erzeugen
-    initLevel()              // Level neu laden
-    world.resetAllObjects(); // Alle Objekte zurücksetzen
-    setupStartButton();      // Startbutton anzeigen
+    stopCurrentGame();       
+    resetKeyboard();         
+    createWorld();           
+    initLevel()              
+    world.resetAllObjects(); 
+    setupStartButton();      
 }
 
+/**
+ * Sets up the restart button and its click behavior.
+ */
 function setupRestartButton() {
     let restartButton = document.getElementById('restartButton');
     restartButton.onclick = () => {
@@ -94,6 +131,9 @@ function setupRestartButton() {
     };
 }
 
+/**
+ * Stops the current game and clears the canvas.
+ */
 function stopCurrentGame() {
     if (world?.stopGame) {
         world.stopGame();
@@ -105,6 +145,9 @@ function stopCurrentGame() {
     world = null;
 }
 
+/**
+ * Resets all keyboard input states.
+ */
 function resetKeyboard() {
     keyboard.d_right = false;
     keyboard.a_left = false;
@@ -113,6 +156,9 @@ function resetKeyboard() {
     keyboard.space_shoot = false;
 }
 
+/**
+ * Sets up the info button and its overlay behavior.
+ */
 function setupInfoButton() {
     let infoButton = document.getElementById('infoButton');
     let overlay = document.getElementById('infoOverlay');
@@ -120,7 +166,7 @@ function setupInfoButton() {
 
     infoButton.onclick = () => {
         if (world?.gameStarted) {
-            world.togglePause(); // Einheitliche Pausenlogik
+            world.togglePause();
             overlay.classList.remove('hidden');
         }
     };
@@ -128,15 +174,18 @@ function setupInfoButton() {
         overlay.classList.add('hidden');
         if (world?.gameStarted) {
             setTimeout(() => {
-                world.togglePause(); // Spiel fortsetzen
+                world.togglePause();
             }, 1000);
         }
     };
 }
 
+/**
+ * Sets up the pause button and toggles game pause state.
+ */
 function setupPauseButton() {
     let pauseButton = document.getElementById('pauseButton');
-    pauseButton.innerText = '⏸️'; // Initiales Symbol
+    pauseButton.innerText = '⏸️';
     pauseButton.onclick = () => {
         if (world?.gameStarted) {
             world.togglePause();
@@ -145,6 +194,9 @@ function setupPauseButton() {
     };
 }
 
+/**
+ * Initializes the sound toggle button once.
+ */
 function setupSoundToggle() {
     if (soundToggleInitialized) return;
     soundToggleInitialized = true;
@@ -159,26 +211,22 @@ function setupSoundToggle() {
     }
 }
 
-
-// der trigger für die Pfeiltasten funktionierrt nur mit "keydown"!!! Das funktioniert aber auch mit allen anderen Tasten!!
-// Tastentrigger auf true
+/**
+ * Handles keydown events and sets corresponding keyboard flags to true.
+ */
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {
             keyboard.d_right = true;
-    } 
-        
+    }    
     if (e.keyCode == 65) {
             keyboard.a_left = true;
     }
-
         if (e.keyCode == 87) {
             keyboard.w_jump = true;
     }
-
         if (e.keyCode ==83) {
             keyboard.s_down = true;
     }
-
         if (e.keyCode == 32) {
             e.preventDefault();
             keyboard.space_shoot = true;
@@ -186,51 +234,44 @@ window.addEventListener("keydown", (e) => {
     
 });
 
-// Tastentrigger auf false
+/**
+ * Handles keyup events and sets corresponding keyboard flags to false.
+ */
 window.addEventListener("keyup", (a) => {
         if (a.keyCode == 68) {
             keyboard.d_right = false;
-    } 
-        
+    }    
         if (a.keyCode == 65) {
             keyboard.a_left = false;
     }
-
         if (a.keyCode == 87) {
             keyboard.w_jump = false;
     }
-
         if (a.keyCode ==83) {
             keyboard.s_down = false;
     }
-
         if (a.keyCode == 32) {
             keyboard.space_shoot = false;
     } 
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-    // SoundHub erzeugen
-    window.soundhub = new SoundHub(); // global verfügbar machen
-
-    // Lautstärke-Slider verbinden
+/**
+ * Initializes SoundHub and connects UI elements after page load.
+ */
+window.addEventListener('DOMContentLoaded', () => { 
+    window.soundhub = new SoundHub();
     let slider = document.getElementById('volumeSlider');
     if (slider) {
-        //Initialwert aus SoundHub setzen
         slider.value = soundhub.volume;
         slider.addEventListener('input', (e) => {
             soundhub.setVolume(e.target.value);
         });
     }
-    // Mute-Icon verbinden
     let icon = document.getElementById('soundToggleIcon');
     if (icon) {
         icon.addEventListener('click', () => {
             soundhub.toggleMute();
         });
     }
-    // Jetzt Spiel initialisieren
     init();
 });
-
-

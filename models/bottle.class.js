@@ -1,10 +1,20 @@
-
+/**
+ * Represents a salsa bottle collectible object in the game.
+ * Extends the MovableObject class and includes position, size, and collision offset.
+ */
 class Bottle extends MovableObject {
 
+    /** @type {number} Vertical position of the bottle */
     y = 360;
+    /** @type {number} Width of the bottle in pixels */
     width = 70;
+    /** @type {number} Height of the bottle in pixels */
     height = 70;
 
+    /**
+     * @type {{top: number, left: number, right: number, bottom: number}}
+     * Collision offset values for fine-tuning hit detection
+     */
     offset = {
         top: 10,
         left: 20,
@@ -12,6 +22,10 @@ class Bottle extends MovableObject {
         bottom: 6,
     };
 
+    /**
+     * Creates a new Bottle object.
+     * Loads the image and sets randomized position and default values.
+     */
     constructor() {
         super();
         this.loadImage('assets/img/ingame_imgs/6.salsa.bottle/2_salsa_bottle_on_ground.png');

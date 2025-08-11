@@ -1,37 +1,167 @@
 
+/**
+ * Represents the game world, including the character, level, UI elements, sounds, and game logic.
+ * Manages rendering, collision detection, object interactions, and game state transitions.
+ */
 class World {
+    /**
+     * The main character controlled by the player.
+     * @type {Character}
+     */
     character = new Character();
+    /**
+     * The current level configuration.
+     * @type {Level}
+     */
     level = level1;
+    /**
+     * The canvas element used for rendering the game.
+     * @type {HTMLCanvasElement}
+     */
     canvas;
+    /**
+     * The 2D rendering context for the canvas.
+     * @type {CanvasRenderingContext2D}
+     */
     ctx;
+    /**
+     * Object that handles keyboard input.
+     * @type {Object}
+     */
     keyboard;
+    /**
+     * Horizontal camera offset for scrolling.
+     * @type {number}
+     */
     camera_x = 0;
+    /**
+     * UI bar displaying the character's health.
+     * @type {Healthbar}
+     */
     healthBar = new Healthbar();
+    /**
+     * UI bar displaying collected coins.
+     * @type {Coinbar}
+     */
     coinBar = new Coinbar();
+    /**
+     * UI bar displaying collected bottles.
+     * @type {Bottlebar}
+     */
     bottleBar = new Bottlebar();
-    endbossBar = new Endbossbar();    
+    /**
+     * UI bar displaying the endboss's health.
+     * @type {Endbossbar}
+     */
+    endbossBar = new Endbossbar();
+    /**
+     * Array of bottles currently thrown by the character.
+     * @type {ThrowableObject[]}
+     */
     throwableObjects = [];
+    /**
+     * Image shown at the start of the game.
+     * @type {HTMLImageElement}
+     */
     startImage = new Image();
+    /**
+     * Image shown when the player wins.
+     * @type {HTMLImageElement}
+     */
     youWinImage = new Image();
+    /**
+     * Image shown when the player loses.
+     * @type {HTMLImageElement}
+     */
     gameOverImage = new Image();
+    /**
+     * Number of bottles collected by the player.
+     * @type {number}
+     */
     bottlesCollected = 0;
+    /**
+     * Sound played when a bottle is thrown.
+     * @type {HTMLAudioElement}
+     */
     throw_bottle_sound = new Audio('audio/throw_bottle.mp3');
+    /**
+     * Sound played when a coin is collected.
+     * @type {HTMLAudioElement}
+     */
     collect_coin_sound = new Audio('audio/collect_coin.mp3');
+    /**
+     * Sound played when a bottle is collected.
+     * @type {HTMLAudioElement}
+     */
     collect_bottle_sound = new Audio('audio/collect_bottle.mp3');
+    /**
+     * Background music for the game.
+     * @type {HTMLAudioElement}
+     */
     background_sound = new Audio('audio/wildwest-soundtrack-acoustic-guitar-69109.mp3');
+    /**
+     * Sound played when the player wins.
+     * @type {HTMLAudioElement}
+     */
     winSound = new Audio('audio/game_won.mp3');
+    /**
+     * Sound played when the player loses.
+     * @type {HTMLAudioElement}
+     */
     looseSound = new Audio('audio/game over.mp3');
+    /**
+     * Flag indicating whether the win sound has already been played.
+     * @type {boolean}
+     */
     gameWonPlayed = false;
+    /**
+     * Flag indicating whether the game has been won.
+     * @type {boolean}
+     */
     gameWon = false;
+    /**
+     * Flag indicating whether the game is over.
+     * @type {boolean}
+     */
     gameOver = false;
+    /**
+     * Flag indicating whether the game over sound has already been played.
+     * @type {boolean}
+     */
     gameOverPlayed = false;
+    /**
+     * Flag indicating whether the game is currently stopped.
+     * @type {boolean}
+     */
     gameStopped = false;
+    /**
+     * ID of the interval used for the game loop.
+     * @type {number}
+     */
     intervalId;
+    /**
+     * ID of the animation frame used for rendering.
+     * @type {number}
+     */
     animationId;
+    /**
+     * Flag indicating whether the game is paused.
+     * @type {boolean}
+     */
     isPaused = false;
+    /**
+     * Flag indicating whether the info screen is paused.
+     * @type {boolean}
+     */
     isInfoPaused = false;
 
 
+    /**
+     * Initializes the game world with canvas and keyboard input.
+     * Loads images, sets up sound, and starts the game loop.
+     * @param {HTMLCanvasElement} canvas - The canvas element used for rendering
+     * @param {Object} keyboard - The keyboard input handler
+     */
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -53,10 +183,17 @@ class World {
         soundhub.setVolume(soundhub.volume);
     }
 
+    /**
+     * Links the character to the current world instance.
+     */
     setWorld() {
         this.character.world = this;
     }
 
+    /**
+     * Toggles the pause state of the game.
+     * Stops or resumes background sound and animation loop.
+     */
     togglePause() {
         this.gameStopped = !this.gameStopped;
         if (this.gameStopped) {
@@ -64,10 +201,14 @@ class World {
             if (this.animationId) cancelAnimationFrame(this.animationId);
         } else {
             this.background_sound.play();
-            this.draw(); // Neustart des Loops
+            this.draw(); // Restart the loop
         }
     }
 
+    /**
+     * Stops the game and all related processes.
+     * Pauses sounds, animations, and removes event listeners.
+     */
     stopGame() {
         this.gameStopped = true;
         this.stopBackgroundSound();
@@ -76,6 +217,9 @@ class World {
         this.removeEventListeners();
     }
 
+    /**
+     * Stops and resets the background music.
+     */
     stopBackgroundSound() {
         if (this.background_sound) {
             this.background_sound.pause();
@@ -83,21 +227,33 @@ class World {
         }
     }
 
+    /**
+     * Stops all character-related sounds and animations.
+     */
     stopCharacter() {
         if (this.character?.stopAllSounds) this.character.stopAllSounds();
         if (this.character?.stopAnimation) this.character.stopAnimation();
     }
 
+    /**
+     * Stops all world-related intervals and animations.
+     */
     stopWorld() {
         if (this.intervalId) clearInterval(this.intervalId);
         if (this.animationId) cancelAnimationFrame(this.animationId);
     }
 
+    /**
+     * Removes keyboard event listeners from the window.
+     */
     removeEventListeners() {
         window.removeEventListener("keydown", this.keydownHandler);
         window.removeEventListener("keyup", this.keyupHandler);
     }
 
+    /**
+     * Resets all game objects to their initial state.
+     */
     resetAllObjects() {
         if (this.character?.reset) this.character.reset();
         if (this.enemies) this.enemies.forEach(e => e.reset?.());
@@ -106,6 +262,11 @@ class World {
         if (this.bottles) this.bottles.forEach(b => b.reset?.());
     }
 
+    /**
+     * Checks if the game has ended due to win or loss conditions.
+     * Displays appropriate screen and stops the game if needed.
+     * @returns {boolean} True if game has ended, false otherwise
+     */
     checkGameEndConditions() {
         if (this.gameStarted && this.character.isDead()) {
             this.drawGameOverScreen();
@@ -120,6 +281,9 @@ class World {
         return false;
     }
 
+    /**
+     * Starts the main game loop for collision detection and object throwing.
+     */
     run() {
         this.intervalId = setInterval(() => {
             this.checkCollisions();
@@ -127,6 +291,9 @@ class World {
         }, 1000 / 60);
     }
 
+    /**
+     * Checks if the player can throw a bottle and initiates the throw.
+     */
     checkThrowObjects() {
         if (!this.level || !this.gameStarted) return;
         let canThrow = this.keyboard.space_shoot &&
@@ -138,6 +305,10 @@ class World {
         this.activateThrowCooldown();
     }
 
+    /**
+     * Creates a new throwable bottle object based on character position and direction.
+     * @returns {ThrowableObject} The newly created bottle object
+     */
     createBottle() {
         let offsetX = this.character.otherDirection ? -40 : 40;
         return new ThrowableObject(
@@ -147,6 +318,10 @@ class World {
         );
     }
 
+    /**
+     * Plays throw sound, adds bottle to world, and updates bottle bar.
+     * @param {ThrowableObject} bottle - The bottle object to throw
+     */
     throwBottle(bottle) {
         this.throw_bottle_sound.play();
         this.throwableObjects.push(bottle);
@@ -154,11 +329,17 @@ class World {
         this.bottleBar.setPercentage(this.bottlesCollected * 20);
     }
 
+    /**
+     * Activates a cooldown period to prevent rapid bottle throwing.
+     */
     activateThrowCooldown() {
         this.throwCooldown = true;
         setTimeout(() => this.throwCooldown = false, 300);
     }
 
+    /**
+     * Checks all relevant collisions in the game world.
+     */
     checkCollisions() {
         if (!this.level || !this.gameStarted) return;
             this.checkCoinCollisions();
@@ -168,6 +349,9 @@ class World {
             this.checkBottleHitsEnemies();
     }
 
+    /**
+     * Checks if any thrown bottles hit enemies and handles the result.
+     */
     checkBottleHitsEnemies() {
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             this.level.enemies.forEach(enemy => {
@@ -179,10 +363,21 @@ class World {
         });
     }
 
+    /**
+     * Determines whether a bottle should hit an enemy.
+     * @param {ThrowableObject} bottle - The bottle object
+     * @param {MovableObject} enemy - The enemy object
+     * @returns {boolean} True if bottle hits and enemy is alive
+     */
     shouldBottleHit(bottle, enemy) {
         return bottle.isColliding(enemy) && !enemy.isDead();
     }
 
+    /**
+     * Handles the logic when a bottle hits an enemy.
+     * Reduces energy or kills the enemy depending on type.
+     * @param {MovableObject} enemy - The enemy that was hit
+     */
     handleBottleHit(enemy) {
         if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
             enemy.energy = 0;
@@ -198,10 +393,18 @@ class World {
         }
     }
 
+    /**
+     * Removes a bottle from the throwableObjects array.
+     * @param {number} index - Index of the bottle to remove
+     */
     removeBottle(index) {
         this.throwableObjects.splice(index, 1);
     }
 
+    /**
+     * Checks for collisions between the character and coins.
+     * Removes collected coins and updates the coin bar.
+     */
     checkCoinCollisions() {
         this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
@@ -212,6 +415,10 @@ class World {
         });
     }
 
+    /**
+     * Checks for collisions between the character and bottles.
+     * Removes collected bottles and updates the bottle bar.
+     */
     checkBottleCollisions() {
         this.level.bottles.forEach((bottle, index) => {
             if (this.character.isColliding(bottle)) {
@@ -223,6 +430,10 @@ class World {
         });
     }
 
+    /**
+     * Checks for collisions between the character and enemies.
+     * Handles damage or enemy defeat depending on conditions.
+     */
     checkEnemyCollisions() {
         this.level.enemies.forEach(enemy => {
             if (!this.character.isColliding(enemy)) return;
@@ -233,6 +444,10 @@ class World {
         });
     }
 
+    /**
+     * Determines how to handle collision with an enemy based on its type.
+     * @param {MovableObject} enemy - The enemy object
+     */
     enemyCollision(enemy) {
         if (enemy instanceof SmallChicken || enemy instanceof Chicken) {
             this.chickenCollision(enemy);
@@ -241,6 +456,11 @@ class World {
         }
     }
 
+    /**
+     * Handles collision with a chicken enemy.
+     * If hit from above, the chicken dies; otherwise, the character takes damage.
+     * @param {MovableObject} chicken - The chicken enemy
+     */
     chickenCollision(chicken) {
         if (chicken.isHitFromAbove(this.character)) {
             chicken.die();
@@ -249,11 +469,18 @@ class World {
         }
     }
 
+    /**
+     * Applies damage to the character and updates the health bar.
+     * @param {MovableObject} enemy - The enemy causing damage
+     */
     damageCharacter(enemy) {
         this.character.hit(enemy.damage);
         this.healthBar.setPercentage(this.character.energy);
     }
 
+    /**
+     * Removes enemies marked for deletion from the level.
+     */
     cleanupEnemies() {
         let before = this.level.enemies.length;
         this.level.enemies = this.level.enemies.filter(e => !e.markedForDeletion);
@@ -262,10 +489,17 @@ class World {
         }
     }
 
+    /**
+     * Draws the start screen image to the canvas.
+     */
     drawStartScreen() {
         this.ctx.drawImage(this.startImage, 0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * Main draw loop for rendering the game world.
+     * Handles start screen, game end conditions, and paused state.
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (!this.gameStarted) {
@@ -273,11 +507,15 @@ class World {
             return;
         }
         if (this.checkGameEndConditions()) return;
-        if (this.gameStopped) return; // Kein Startscreen mehr bei Pause!
+        if (this.gameStopped) return; // No start screen during pause!
         this.drawWorldObjects();
         this.animationId = requestAnimationFrame(() => this.draw());
     }
 
+    /**
+     * Draws all visual elements of the game world.
+     * Includes background, objects, character, enemies, and UI bars.
+     */
     drawWorldObjects() {
         this.ctx.translate(this.camera_x, 0);
         this.drawBackground();
@@ -288,6 +526,9 @@ class World {
         this.drawBars();
     }
 
+    /**
+     * Draws the game over screen and plays the game over sound once.
+     */
     drawGameOverScreen() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.gameOverImage, 0, 0, this.canvas.width, this.canvas.height);
@@ -297,6 +538,9 @@ class World {
         }
     }
 
+    /**
+     * Draws the win screen and plays the win sound once.
+     */
     drawWinScreen() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.youWinImage, 0, 0, this.canvas.width, this.canvas.height);
@@ -306,22 +550,34 @@ class World {
         }
     }
 
+    /**
+     * Draws background objects and clouds to the canvas.
+     */
     drawBackground() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
     }
 
+    /**
+     * Draws movable objects like coins, bottles, and thrown bottles.
+     */
     drawMovableObjects() {
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.throwableObjects);
     }
 
+    /**
+     * Draws the character and all enemies to the canvas.
+     */
     drawCharacterAndEnemies() {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
     }
 
+    /**
+     * Draws all UI bars (health, coins, bottles, endboss).
+     */
     drawBars() {
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
@@ -329,18 +585,29 @@ class World {
         this.addToMap(this.endbossBar);
     }
 
+    /**
+     * Adjusts camera position if the endboss is present.
+     */
     checkEndbossCamera() {
         if (this.level.endboss) {
             this.level.endboss.checkCameraPosition(this.camera_x, 3200);
         }
     }
 
+    /**
+     * Adds multiple drawable objects to the canvas.
+     * @param {DrawableObject[]} objects - Array of drawable objects
+     */
     addObjectsToMap(objects) {
         objects.forEach(obj => {
             this.addToMap(obj)
         });
     }
 
+    /**
+     * Adds a single drawable object to the canvas, handling direction flipping.
+     * @param {DrawableObject} mo - The drawable object
+     */
     addToMap(mo) {
         if (mo.otherDirection) {
             this.flipImage(mo);
@@ -353,6 +620,10 @@ class World {
         }
     }
 
+    /**
+     * Flips the image horizontally for objects facing the opposite direction.
+     * @param {DrawableObject} mo - The object to flip
+     */
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -360,6 +631,10 @@ class World {
         mo.x = mo.x * -1;
     }
 
+    /**
+     * Restores the original orientation of a flipped image.
+     * @param {DrawableObject} mo - The object to restore
+     */
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();

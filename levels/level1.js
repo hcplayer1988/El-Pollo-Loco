@@ -1,6 +1,10 @@
-
+/** @type {Level} */
 let level1;
 
+/**
+ * Initializes level1 with predefined enemies, clouds, background objects, coins, and bottles.
+ * Creates a new Level instance and assigns it to the global variable `level1`.
+ */
 function initLevel() {
 
     level1 = new Level(
@@ -83,5 +87,6 @@ function initLevel() {
     ],
 
 );
+
 
 }

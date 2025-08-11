@@ -1,5 +1,10 @@
-
+/**
+ * Represents the main playable character in the game.
+ * Handles movement, animation, sound effects, and interaction with the game world.
+ * Inherits from MovableObject.
+ */
 class Character extends MovableObject {
+    /** @type {string[]} Animation frames for walking */
     images_walking = [
         'assets/img/ingame_imgs/2.character.pepe/2.walk/W-21.png',
         'assets/img/ingame_imgs/2.character.pepe/2.walk/W-22.png',
@@ -8,6 +13,7 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/2.walk/W-25.png',
         'assets/img/ingame_imgs/2.character.pepe/2.walk/W-26.png'
     ];
+    /** @type {string[]} Animation frames for jumping */
     images_jumping = [
         'assets/img/ingame_imgs/2.character.pepe/3.jump/J-31.png',
         'assets/img/ingame_imgs/2.character.pepe/3.jump/J-32.png',
@@ -18,8 +24,8 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/3.jump/J-37.png',
         'assets/img/ingame_imgs/2.character.pepe/3.jump/J-38.png',
         'assets/img/ingame_imgs/2.character.pepe/3.jump/J-39.png'
-
     ];
+    /** @type {string[]} Animation frames for death */
     images_dead = [
         'assets/img/ingame_imgs/2.character.pepe/5.dead/D-51.png',
         'assets/img/ingame_imgs/2.character.pepe/5.dead/D-52.png',
@@ -29,11 +35,13 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/5.dead/D-56.png',
         'assets/img/ingame_imgs/2.character.pepe/5.dead/D-57.png'
     ];
+    /** @type {string[]} Animation frames for hurt */
     images_hurt = [
         'assets/img/ingame_imgs/2.character.pepe/4.hurt/H-41.png',
         'assets/img/ingame_imgs/2.character.pepe/4.hurt/H-42.png',
         'assets/img/ingame_imgs/2.character.pepe/4.hurt/H-43.png'
     ];
+    /** @type {string[]} Animation frames for idle */
     images_idle = [
         'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png',
         'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-2.png',
@@ -46,6 +54,7 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-9.png',
         'assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-10.png'
     ];
+    /** @type {string[]} Animation frames for long idle */
     images_idle_long = [
         'assets/img/ingame_imgs/2.character.pepe/1.idle/long_idle/I-11.png',
         'assets/img/ingame_imgs/2.character.pepe/1.idle/long_idle/I-12.png',
@@ -58,24 +67,39 @@ class Character extends MovableObject {
         'assets/img/ingame_imgs/2.character.pepe/1.idle/long_idle/I-19.png',
         'assets/img/ingame_imgs/2.character.pepe/1.idle/long_idle/I-20.png'
     ];
-
+    /** @type {HTMLAudioElement} Sound for walking */
     walking_sound = new Audio('audio/fast_walk_sand.mp3');
+    /** @type {HTMLAudioElement} Sound for jumping */
     jump_sound = new Audio('audio/jump.mp3');
+    /** @type {HTMLAudioElement} Sound for snoring during long idle */
     snoring_sound = new Audio('audio/snoring.mp3');
+    /** @type {HTMLAudioElement} Sound for getting hit */
     hit_sound = new Audio('audio/hit_sound.mp3');
+    /** @type {number} Index of the current animation frame */
     currentImage = 0;
+    /** @type {World} Reference to the game world */
     world;
+    /** @type {number} Movement speed of the character */
     speed = 4;
+    /** @type {number|null} Last bottom position before getting hit */
     lastBottomBeforeHit = null;
+    /**
+     * @type {{top: number, left: number, right: number, bottom: number}}
+     * Collision offset values for the character
+     */
     offset = {
         top: 50,
         left: 10,
         right: 10,
         bottom: 6
     };
+    /** @type {number[]} Array of interval IDs for animation loops */
     characterIntervals = [];
 
-
+    /**
+     * Creates a new Character instance.
+     * Loads all animation images, applies gravity, and registers sounds.
+     */
     constructor() {
         super().loadImage('assets/img/ingame_imgs/2.character.pepe/1.idle/idle/I-1.png')
         this.loadImages(this.images_walking);
@@ -96,6 +120,10 @@ class Character extends MovableObject {
         soundhub.addSound(this.hit_sound);
     }
 
+    /**
+     * Starts animation loops for movement, action, and idle behavior.
+     * Uses multiple intervals to handle different animation states.
+    */
     animate() {
         this.characterIntervals.push(setInterval(() => {
             this.handleMovement();
@@ -112,11 +140,18 @@ class Character extends MovableObject {
         }, 1000 / 10));
     }
 
+    /**
+     * Stops all animation intervals and clears the interval list.
+     */
     stopAnimation() {
         this.characterIntervals.forEach(clearInterval);
         this.characterIntervals = [];
     }
 
+    /**
+     * Handles character movement based on keyboard input.
+     * Updates position and triggers movement sounds.
+     */
     handleMovement() {
         if (this.world?.gameStopped) return;
         this.lastBottomBeforeHit = this.y + this.height;
@@ -127,6 +162,10 @@ class Character extends MovableObject {
         this.handleJump();
     }
 
+    /**
+     * Moves the character to the right if the right key is pressed.
+     * Plays walking sound and sets direction.
+     */
     handleRightMovement() {
         if (this.world.keyboard.d_right && this.x < this.world.level.level_end_x) {
             this.moveRight();
@@ -136,6 +175,10 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Moves the character to the left if the left key is pressed.
+     * Plays walking sound and sets direction.
+     */
     handleLeftMovement() {
         if (this.world.keyboard.a_left && this.x > -600) {
             this.moveLeft();
@@ -145,6 +188,10 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Makes the character jump if the jump key is pressed and character is on the ground.
+     * Plays jump sound and triggers jump animation.
+     */
     handleJump() {
         if (this.world.keyboard.w_jump && !this.isAboveGround()) {
             this.jump_sound.currentTime = 0;
@@ -154,10 +201,17 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Updates the camera position based on character's x-coordinate.
+     */
     updateCamera() {
         this.world.camera_x = -this.x + 100;
     }
 
+    /**
+     * Resets the idle timer if any action occurred or character is hurt/dead.
+     * Stops snoring sound and resets idle state.
+     */
     resetIdleTimerIfActive() {
         if (this.actionOccurred || this.hurtAnimationTriggered || this.isDead()) {
             this.lastActionTime = Date.now();
@@ -167,15 +221,22 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Handles animation updates based on character state.
+     * Prioritizes hurt/death, then movement, then idle.
+     */
     handleAnimation() {
         this.handleHurtOrDeathAnimation() ||
         this.handleMovementAnimation() ||
         this.handleIdleAnimation();
-            if (!this.world || !this.world.gameStarted || this.world.gameStopped) {
+        if (!this.world || !this.world.gameStarted || this.world.gameStopped) {
             return;
         }
     }
 
+    /**
+     * Stops all character-related sounds.
+     */
     stopAllSounds() {
         this.walking_sound.pause();
         this.jump_sound.pause();
@@ -183,6 +244,10 @@ class Character extends MovableObject {
         this.hit_sound.pause();
     }
 
+    /**
+     * Plays hurt or death animation depending on character state.
+     * @returns {boolean} True if an animation was played.
+     */
     handleHurtOrDeathAnimation() {
         if (this.hurtAnimationTriggered) {
             this.hit_sound.play();
@@ -196,6 +261,10 @@ class Character extends MovableObject {
         return false;
     }
 
+    /**
+     * Plays movement animation if character is jumping or walking.
+     * @returns {boolean} True if an animation was played.
+     */
     handleMovementAnimation() {
         if (this.isAboveGround()) {
             this.playAnimation(this.images_jumping);
@@ -208,6 +277,10 @@ class Character extends MovableObject {
         return false;
     }
 
+    /**
+     * Plays idle or long idle animation depending on inactivity duration.
+     * Triggers snoring sound during long idle.
+     */
     handleIdleAnimation() {
         if (!this.world || !this.world.gameStarted) {
             return;

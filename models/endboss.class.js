@@ -1,16 +1,28 @@
-
+/**
+ * Represents the Endboss enemy in the game.
+ * Inherits from MovableObject and includes behavior for alert, attack, hurt, and death states.
+ */
 class Endboss extends MovableObject {
 
+    /** @type {number} Vertical position of the endboss */
     y = 145;
+    /** @type {number} Width of the endboss */
     width = 280;
+    /** @type {number} Height of the endboss */
     height = 290;
+    /**
+     * @type {{top: number, left: number, right: number, bottom: number}}
+     * Offset values for collision detection
+     */
     offset = {
         top: 40,
         left: 10,
         right: 0,
         bottom: 5
     };
+    /** @type {number} Damage dealt by the endboss */
     damage = 25;
+    /** @type {string[]} Image paths for alert animation */
     images_alert = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G6.png',
@@ -21,13 +33,14 @@ class Endboss extends MovableObject {
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G11.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G12.png'
     ];
+    /** @type {string[]} Image paths for walking animation */
     images_walking = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G1.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G2.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G3.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/1_walk/G4.png',
-
     ];
+    /** @type {string[]} Image paths for attack animation */
     images_attack = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G13.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G14.png',
@@ -38,25 +51,38 @@ class Endboss extends MovableObject {
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G19.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/3_attack/G20.png'
     ];
+    /** @type {string[]} Image paths for hurt animation */
     images_hurt = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G21.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G22.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/4_hurt/G23.png'
     ];
+    /** @type {string[]} Image paths for death animation */
     images_dead = [
         'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G24.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G25.png',
         'assets/img/ingame_imgs/4.enemie.boss.chicken/5_dead/G26.png'
     ];
+    /** @type {boolean} Indicates whether the endboss is in attack mode */
     attackMode = false;
+    /** @type {boolean} Indicates whether the alert phase is active */
     alertPhaseActive = true;
+    /** @type {string[]} Currently active animation images */
     currentImages = this.images_alert;
+    /** @type {any} Reference to the game world */
     world;
+    /** @type {boolean} Indicates whether the endboss is currently hurt */
     isHurt = false;
+    /** @type {boolean} Marks the endboss for removal from the game */
     markedForDeletion = false;
+    /** @type {boolean} Indicates whether the endboss is dead */
     dead = false;
+    /** @type {number} Current energy level of the endboss */
     energy = 100;
 
+    /**
+     * Constructs the Endboss object and initializes its properties and animations.
+     */
     constructor() {
         super().loadImage('assets/img/ingame_imgs/4.enemie.boss.chicken/2_alert/G5.png')
         this.loadImages(this.images_alert);
@@ -74,11 +100,17 @@ class Endboss extends MovableObject {
         this.defaultSpeed = this.speed;
     }
 
+    /**
+     * Starts movement and animation loops for the endboss.
+     */
     animate() {
         this.startMovementLoop();
         this.startAnimationLoop();
     }
 
+    /**
+     * Continuously checks for alert trigger and moves the endboss if conditions are met.
+     */
     startMovementLoop() {
         setInterval(() => {
             this.checkAlertTrigger();
@@ -88,7 +120,9 @@ class Endboss extends MovableObject {
         }, 1000 / 100);
     }
 
-
+    /**
+     * Checks if the endboss should enter alert mode based on proximity to the character.
+     */
     checkAlertTrigger() {
         if (!this.alertTriggered && this.getDistanceToCharacter() < 500) {
             this.alertTriggered = true;
@@ -96,12 +130,14 @@ class Endboss extends MovableObject {
             this.currentImages = this.images_alert;
             setTimeout(() => {
                 this.alertPhaseActive = false;
-                this.updateState(); // Sofort Zustand aktualisieren
-            }, 1000); // 1 Sekunde Alert-Phase
+                this.updateState();
+            }, 1000);
         }
     }
 
-
+    /**
+     * Continuously updates animation frames and state transitions.
+     */
     startAnimationLoop() {
         setInterval(() => {
             if (!this.isHurt) {
@@ -111,16 +147,27 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    /**
+     * Calculates the horizontal distance between the endboss and the character.
+     * @returns {number} Absolute distance in pixels
+     */
     getDistanceToCharacter() {
         return Math.abs(this.x - this.world.character.x);
     }
 
+    /**
+     * Updates the current state of the endboss based on conditions.
+     */
     updateState() {
         if (this.handleDeath()) return;
         if (this.handleAlertPhase()) return;
         this.handleCombatState();
     }
 
+    /**
+     * Handles transition to death state.
+     * @returns {boolean} True if dead, otherwise false
+     */
     handleDeath() {
         if (this.isDead()) {
             this.currentImages = this.images_dead;
@@ -129,6 +176,10 @@ class Endboss extends MovableObject {
         return false;
     }
 
+    /**
+     * Handles behavior during alert phase.
+     * @returns {boolean} True if alert phase is active, otherwise false
+     */
     handleAlertPhase() {
         if (this.alertPhaseActive) {
             this.attackMode = false;
@@ -138,19 +189,25 @@ class Endboss extends MovableObject {
         return false;
     }
 
+    /**
+     * Updates combat behavior based on proximity to the character.
+     */
     handleCombatState() {
-        let closeToCharacter = this.getDistanceToCharacter() < 150;
+        let closeToCharacter = this.getDistanceToCharacter() < 130;
         this.attackMode = closeToCharacter;
         if (this.attackMode) {
             this.currentImages = this.images_attack;
-            this.speed = 1.1;
+            this.speed = 1.9;
         } else {
             this.currentImages = this.images_walking;
-            this.speed = 0.5;
+            this.speed = 0.9;
         }
     }
 
-
+    /**
+     * Applies damage to the endboss and triggers hurt animation.
+     * @param {number} damage - Amount of damage to apply
+     */
     hit(damage) {
         this.energy = Math.max(this.energy - damage, 0);
         this.isHurt = true;
@@ -162,6 +219,9 @@ class Endboss extends MovableObject {
         }, 300);
     }
 
+    /**
+     * Triggers death sequence and marks the game as won.
+     */
     die() {
         this.energy = 0;
         this.currentImages = this.images_dead;
@@ -173,4 +233,3 @@ class Endboss extends MovableObject {
         }, 1500);
     }
 }
-

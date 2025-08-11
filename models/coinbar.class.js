@@ -1,6 +1,14 @@
-
+/**
+ * Represents the coin status bar in the game UI.
+ * Displays the player's current coin collection progress using different images.
+ * Inherits from the Statusbar class.
+ */
 class Coinbar extends Statusbar {
 
+    /**
+     * Creates a new Coinbar instance.
+     * Initializes the status bar with a set of images representing different coin levels.
+     */
     constructor() {
         const coinImages = [
             'assets/img/ingame_imgs/7.statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
