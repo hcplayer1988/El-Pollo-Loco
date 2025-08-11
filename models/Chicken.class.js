@@ -1,3 +1,4 @@
+
 /**
  * Represents a Chicken enemy in the game.
  * Handles movement, animation, collision detection, and death behavior.
@@ -38,6 +39,11 @@ class Chicken extends MovableObject {
     images_dead = [
         'assets/img/ingame_imgs/3.enemies.chicken/chicken_normal/2_dead/dead.png'
     ];
+    /** @type {number[]} Array of interval IDs for animation loops */
+    chickenIntervals = [];
+    /** @type {number|null} Timestamp when the chicken was paused */
+    pausedAt = null;
+
 
     /**
      * Creates a new Chicken instance.
@@ -59,14 +65,38 @@ class Chicken extends MovableObject {
      * Starts the walking animation and handles switching to dead image if necessary.
      */
     animate() {
-        setInterval(() => {
+        this.chickenIntervals.push(setInterval(() => {
             if (!this.isDead()) {
                 this.moveLeft();
                 this.playAnimation(this.images_walking);
             } else {
                 this.img = this.imageCache[this.images_dead[0]];
             }
-        }, 1000 / 15);
+        }, 1000 / 15));
+    }
+
+    /**
+     * Stops all animation intervals.
+    */
+    stopAnimation() {
+        this.chickenIntervals.forEach(clearInterval);
+        this.chickenIntervals = [];
+    }
+
+    /**
+     * Pauses all animations and sounds of the chicken.
+     */
+    pauseAnimation() {
+        this.stopAnimation();
+        this.pausedAt = Date.now();
+    }
+
+    /**
+     * Resumes all animations and sounds of the chicken.
+     */
+    resumeAnimation() {
+        this.animate();
+        this.pausedAt = null;
     }
 
     /**
