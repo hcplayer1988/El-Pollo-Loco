@@ -4,6 +4,14 @@
     }
 }
 
+@media (max-width: 740px) {
+    #btnFullscreen {
+        height: 24px;
+        width: 24px;
+        opacity: 100%;
+    }
+}
+
 @media only screen and (max-width: 770px) {
     .mobile_instruktion {
         display: block;

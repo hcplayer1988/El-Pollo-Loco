@@ -203,6 +203,7 @@ canvas {
 #btnFullscreen {
     height: 24px;
     width: 24px;
+    opacity: 0%;
 }
 
 #pauseButton {
