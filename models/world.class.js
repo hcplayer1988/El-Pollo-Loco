@@ -155,7 +155,6 @@ class World {
      */
     isInfoPaused = false;
 
-
     /**
      * Initializes the game world with canvas and keyboard input.
      * Loads images, sets up sound, and starts the game loop.
@@ -199,9 +198,18 @@ class World {
         if (this.gameStopped) {
             this.background_sound.pause();
             if (this.animationId) cancelAnimationFrame(this.animationId);
+            if (this.intervalId) clearInterval(this.intervalId);
+            this.character.pauseAnimation();
+            this.level.enemies.forEach(e => e.pauseAnimation?.());
+            this.level.clouds.forEach(c => c.pauseAnimation?.());
         } else {
             this.background_sound.play();
-            this.draw(); // Restart the loop
+            this.run();
+            this.draw();
+            this.character.resumeAnimation();
+            this.level.enemies.forEach(e => e.resumeAnimation?.());
+            this.level.clouds.forEach(c => c.resumeAnimation?.());
+
         }
     }
 
@@ -286,6 +294,7 @@ class World {
      */
     run() {
         this.intervalId = setInterval(() => {
+            if (this.gameStopped) return;
             this.checkCollisions();
             this.checkThrowObjects();
         }, 1000 / 60);

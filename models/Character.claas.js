@@ -95,6 +95,8 @@ class Character extends MovableObject {
     };
     /** @type {number[]} Array of interval IDs for animation loops */
     characterIntervals = [];
+    /** @type {number|null} Timestamp when game was paused */
+    pausedAt = null;
 
     /**
      * Creates a new Character instance.
@@ -146,6 +148,27 @@ class Character extends MovableObject {
     stopAnimation() {
         this.characterIntervals.forEach(clearInterval);
         this.characterIntervals = [];
+    }
+
+    /**
+     * Pauses all character animations and sounds.
+     */
+    pauseAnimation() {
+        this.stopAnimation(); // Stops all intervals
+        this.stopAllSounds(); // Stops all active sounds
+        this.pausedAt = Date.now();
+    }
+
+    /**
+     * Resumes all character animations and sounds.
+     */
+    resumeAnimation() {
+        if (this.pausedAt) {
+        let pauseDuration = Date.now() - this.pausedAt;
+        this.lastActionTime += pauseDuration; // Korrigiert die Inaktivitätszeit
+        this.pausedAt = null;
+        }
+        this.animate(); // Restarts all intervals
     }
 
     /**
@@ -226,12 +249,15 @@ class Character extends MovableObject {
      * Prioritizes hurt/death, then movement, then idle.
      */
     handleAnimation() {
-        this.handleHurtOrDeathAnimation() ||
-        this.handleMovementAnimation() ||
-        this.handleIdleAnimation();
         if (!this.world || !this.world.gameStarted || this.world.gameStopped) {
             return;
         }
+        this.handleHurtOrDeathAnimation() ||
+        this.handleMovementAnimation() ||
+        this.handleIdleAnimation();
+        // if (!this.world || !this.world.gameStarted || this.world.gameStopped) {
+        //     return;
+        // }
     }
 
     /**
@@ -282,7 +308,7 @@ class Character extends MovableObject {
      * Triggers snoring sound during long idle.
      */
     handleIdleAnimation() {
-        if (!this.world || !this.world.gameStarted) {
+        if (!this.world || !this.world.gameStarted || this.world.gameStopped) {
             return;
         }
         let now = Date.now();
