@@ -119,7 +119,9 @@ function resetGame() {
     createWorld();           
     initLevel()              
     world.resetAllObjects(); 
-    setupStartButton();      
+    setupStartButton();
+    document.getElementById('infoButton').style.display = 'none';
+    document.getElementById('restartButton').style.display = 'none';
 }
 
 /**
