@@ -1,3 +1,4 @@
+
 /**
  * Represents a small chicken enemy in the game.
  * Inherits from MovableObject and includes behavior for movement, collision, and death.
@@ -38,6 +39,9 @@ class SmallChicken extends MovableObject {
     images_dead = [
         'assets/img/ingame_imgs/3.enemies.chicken/chicken_small/2_dead/dead.png'
     ];
+    /** @type {number[]} Array of interval IDs for animation loops */
+    smallChickenIntervals = [];
+
 
     /**
      * Creates a SmallChicken instance with randomized position and speed.
@@ -57,17 +61,43 @@ class SmallChicken extends MovableObject {
 
     /**
      * Starts the animation loop for walking or death state.
-     */
+    */
     animate() {
-        setInterval(() => {
+        this.smallChickenIntervals.push(setInterval(() => {
             if (!this.isDead()) {
                 this.moveLeft();
                 this.playAnimation(this.images_walking);
             } else {
                 this.img = this.imageCache[this.images_dead[0]];
             }
-        }, 1000 / 20); 
+        }, 1000 / 20));
     }
+
+    /**
+     * Stops all animation intervals.
+     */
+    stopAnimation() {
+        this.smallChickenIntervals.forEach(clearInterval);
+        this.smallChickenIntervals = [];
+    }
+
+    /**
+     * Pauses all animations and sounds of the small chicken.
+     */
+    pauseAnimation() {
+        this.stopAnimation();
+        this.pausedAt = Date.now();
+    }
+
+    /**
+     * Resumes all animations and sounds of the small chicken.
+     */
+    resumeAnimation() {
+        this.animate();
+        this.pausedAt = null;
+    }
+
+
 
     /**
      * Checks if the chicken is dead.
