@@ -25,13 +25,20 @@ function handleGameStart(button) {
         world.background_sound.play();
         world.character.lastActionTime = Date.now();
         button.style.display = 'none';
+        document.getElementById('infoButton').style.display = 'inline-block';
+        document.getElementById('restartButton').style.display = 'inline-block';
         world.draw(); // Starte die Animationsschleife neu!
     }
 }
 
 function fullscreen() {
-    let fullscreen = document.getElementById('fullScreen');
-    enterFullscreen(fullscreen);
+    let fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fullscreenElement) {
+        exitFullscreen();
+    } else {
+        let fullscreen = document.getElementById('fullScreen');
+        enterFullscreen(fullscreen);
+    }
 }
 
 function enterFullscreen(element) {
@@ -54,7 +61,6 @@ function exitFullscreen() {
 
 function setupStartButton() {
     let startButton = document.getElementById('startButton');
-
     // Nur anzeigen, wenn das Spiel noch nicht gestartet wurde
     if (!world?.gameStarted) {
         startButton.style.display = 'block';

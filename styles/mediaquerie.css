@@ -4,7 +4,7 @@
     }
 }
 
-@media (max-width: 740px) {
+@media (max-width: 830px) {
     #btnFullscreen {
         height: 24px;
         width: 24px;
@@ -55,22 +55,29 @@
         font-size: 16px;
         width: 50px;
         padding: 0;
+        opacity: 70%;
     }
 
     #restartButton {
         font-size: 16px;
         width: 70px;
         padding: 0;
+        opacity: 70%;
     }
 
     #infoButton {
         font-size: 16px;
         width: 50px;
         padding: 0;
+        opacity: 70%;
     }
 
     #impressumBtn {
-        opacity: 100%;
+        display: block;
+        opacity: 70%;
+        font-size: 16px;
+        padding: 0;
+        width: 95px;
 }
 
     .info-content {
