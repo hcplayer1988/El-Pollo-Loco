@@ -138,4 +138,40 @@ class MovableObject extends DrawableObject {
         if (this.stopAnimation) this.stopAnimation();
         if (this.resetAnimation) this.resetAnimation();
     }
+
+    /**
+     * Handles collision logic between this enemy and the character.
+     * @param {Character} character - The player character
+     */
+    handleCollisionWithCharacter(character) {
+        if (this instanceof SmallChicken || this instanceof Chicken) {
+            if (this.isHitFromAbove(character)) {
+                this.die();
+            } else {
+                character.hit(this.damage);
+            }
+        } else {
+            character.hit(this.damage);
+        }
+    }
+
+    /**
+     * Handles being hit by a bottle.
+     * Reduces energy or triggers death depending on type.
+     * @param {World} world - Reference to the game world (for UI updates)
+     */
+    handleBottleHit(world) {
+        if (this instanceof Chicken || this instanceof SmallChicken) {
+            this.energy = 0;
+            this.die();
+        } else if (this instanceof Endboss) {
+            if (!this.isDead()) {
+                this.hit(16.67);
+                world.endbossBar.setPercentage(this.energy);
+                if (this.energy <= 0) {
+                    this.die();
+                }
+            }
+        }
+    }
 }

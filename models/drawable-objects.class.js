@@ -92,4 +92,24 @@ class DrawableObject {
             this.imageCache[path] = img;
         });
     }
+
+    /**
+     * Flips the image horizontally for objects facing the opposite direction.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context
+     */
+    flipImage(ctx) {
+        ctx.save();
+        ctx.translate(this.width, 0);
+        ctx.scale(-1, 1);
+        this.x = this.x * -1;
+    }
+
+    /**
+     * Restores the original orientation of a flipped image.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context
+     */
+    flipImageBack(ctx) {
+        this.x = this.x * -1;
+        ctx.restore();
+    }  
 }

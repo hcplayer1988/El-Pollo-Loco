@@ -134,17 +134,14 @@ function setupRestartButton() {
     };
 }
 
+
 /**
  * Stops the current game and clears the canvas.
  */
 function stopCurrentGame() {
-    if (world?.stopGame) {
-        world.stopGame();
-    }
-
+    stopGame();
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     world = null;
 }
 
@@ -211,6 +208,68 @@ function setupSoundToggle() {
         });
     } else {
         console.warn('soundToggleIcon not found in DOM');
+    }
+}
+
+/**
+ * Stops the game and all related processes.
+ */
+function stopGame() {
+    if (!world) return;
+
+    world.gameStopped = true;
+    stopBackgroundSound();
+    stopCharacter();
+    stopWorld();
+}
+
+/**
+ * Stops and resets the background music.
+ */
+function stopBackgroundSound() {
+    if (world.background_sound) {
+        world.background_sound.pause();
+        world.background_sound.currentTime = 0;
+    }
+}
+
+/**
+ * Stops all character-related sounds and animations.
+ */
+function stopCharacter() {
+    if (world.character?.stopAllSounds) world.character.stopAllSounds();
+    if (world.character?.stopAnimation) world.character.stopAnimation();
+}
+
+/**
+ * Stops all world-related intervals and animations.
+ */
+function stopWorld() {
+    if (world.intervalId) clearInterval(world.intervalId);
+    if (world.animationId) cancelAnimationFrame(world.animationId);
+}
+
+/**
+ * Toggles the pause state of the game.
+ * Stops or resumes background sound and animation loop.
+ * @param {World} world - Die aktuelle World-Instanz
+ */
+function togglePause(world) {
+    world.gameStopped = !world.gameStopped;
+    if (world.gameStopped) {
+        world.background_sound.pause();
+        if (world.animationId) cancelAnimationFrame(world.animationId);
+        if (world.intervalId) clearInterval(world.intervalId);
+        world.character.pauseAnimation();
+        world.level.enemies.forEach(e => e.pauseAnimation?.());
+        world.level.clouds.forEach(c => c.pauseAnimation?.());
+    } else {
+        world.background_sound.play();
+        world.run();
+        world.draw();
+        world.character.resumeAnimation();
+        world.level.enemies.forEach(e => e.resumeAnimation?.());
+        world.level.clouds.forEach(c => c.resumeAnimation?.());
     }
 }
 
